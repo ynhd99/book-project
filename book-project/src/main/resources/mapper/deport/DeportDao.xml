@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.book.dao.DeportDao">
+    <!--新增仓库信息-->
+    <insert id="addDeport" parameterType="com.example.book.entity.DeportEntity">
+        insert into deport
+        (
+        id,
+        deport_code,
+        deport_name,
+        begin_flag,
+        begin_time,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{deportCode},
+        #{deportName},
+        #{beginFlag},
+        #{beginTime},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--根据编码获取仓库-->
+    <select id="getDeportByCode" parameterType="string" resultType="com.example.book.entity.DeportEntity">
+        select *
+        from deport
+        <where>
+            delete_flag = 0
+            and deport_code = #{deportCode}
+        </where>
+    </select>
+    <!--分页查询仓库信息-->
+    <select id="findDataForPage" parameterType="com.example.book.entity.DeportEntity" resultType="com.example.book.entity.DeportEntity">
+        select id,deport_code deportCode,deport_name deportName,status
+        from deport
+        <where>
+            delete_flag = 0
+            <if test="null != queryString and '' != queryString">
+            and deport_code like concat('%',#{queryString},'%') or deport_name like concat('%',#{queryString},'%')
+            </if>
+        </where>
+        order by status asc ,update_time desc
+    </select>
+    <!--更新仓库状态-->
+    <update id="updateStatus" parameterType="com.example.book.entity.DeportEntity">
+        update deport
+        <set>
+            status = #{status},
+            update_time = #{updateTime}
+        </set>
+        <where>
+            delete_flag = 0
+            and id = #{id}
+        </where>
+    </update>
+    <!--删除仓库-->
+    <update id="deleteDeport" parameterType="com.example.book.entity.DeportEntity">
+        update deport
+        <set>
+            delete_flag = 1
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <!--更新仓库信息-->
+    <update id="update" parameterType="com.example.book.entity.DeportEntity">
+        update deport
+        <set>
+            <if test="null != deportCode and '' != deportCode">
+                deport_code = #{deportCode},
+            </if>
+            <if test="null != deportName and '' != deportName">
+                deport_name = #{deportName},
+            </if>
+        </set>
+        <where>
+            delete_flag = 0 and id = #{id}
+        </where>
+    </update>
+</mapper>
