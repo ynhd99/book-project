@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.RoomDao">
+    <!--新增宿舍信息-->
+    <insert id="addRoom" parameterType="com.example.room.entity.RoomEntity">
+        insert into room
+        (
+        id,
+        cate_id,
+        room_code,
+        building_id,
+        room_count,
+        room_current,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{cateId},
+        #{roomCode},
+        #{buildingId},
+        #{roomCount},
+        #{roomCurrent},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--根据编码获取仓库-->
+    <select id="getRoomByCode" parameterType="string" resultType="com.example.room.entity.RoomEntity">
+        select *
+        from room
+        <where>
+            delete_flag = 0
+            and room_code = #{roomCode}
+        </where>
+    </select>
+    <!--分页查询宿舍信息-->
+    <select id="findDataForPage" parameterType="com.example.room.entity.RoomEntity" resultType="com.example.room.entity.RoomEntity">
+        select r.id,r.room_code rc.cateName,b.building_name,r.room_count,r.status
+        from room r
+        inner join room_category rc on r.cate_id = rc.id
+        inner join buildind b on r.building_id = b.id
+        <where>
+            r.delete_flag = 0
+            <if test="null != queryString and '' != queryString">
+            and r.room_code like concat('%',#{queryString},'%')
+            </if>
+        </where>
+        order by r.status asc ,r.update_time desc
+    </select>
+    <!--更新仓库状态-->
+    <update id="updateStatus" parameterType="com.example.room.entity.RoomEntity">
+        update room
+        <set>
+            status = #{status},
+            update_time = #{updateTime}
+        </set>
+        <where>
+            delete_flag = 0
+            and id = #{id}
+        </where>
+    </update>
+    <!--删除仓库-->
+    <update id="deleteRoom" parameterType="com.example.room.entity.RoomEntity">
+        update room
+        <set>
+            delete_flag = 1
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <!--更新仓库信息-->
+    <update id="update" parameterType="com.example.room.entity.RoomEntity">
+        update room
+        <set>
+            <if test="null != roomCode and '' != roomCode">
+                room_code = #{roomCode},
+            </if>
+        </set>
+        <where>
+            delete_flag = 0 and id = #{id}
+        </where>
+    </update>
+</mapper>
