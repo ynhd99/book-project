@@ -15,7 +15,7 @@
     </resultMap>
     <!--获取用户信息-->
     <select id="getUserInfo" parameterType="string" resultMap="setUserEntity">
-        select id,user_pass,user_name
+        select id,user_pass,user_name,full_name
         from user
         where user_name=#{userName} and delete_flag = 0
     </select>

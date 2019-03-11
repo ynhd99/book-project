@@ -37,6 +37,7 @@ public class UserController {
     MessageBody getUserInfo(@Validated @RequestBody UserInfo userInfo) {
         Map<String, String> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
+        subject.getSession().setAttribute("userName",userInfo.getUserName());
         UsernamePasswordToken token = new UsernamePasswordToken(userInfo.getUserName(), userInfo.getUserPass());
         try {
             //登录
@@ -92,5 +93,13 @@ public class UserController {
         MessageBody map = new MessageBody();
         map.setCode("304");
         return map;
+    }
+
+    @PostMapping("getUser")
+    public String getUser() {
+        Subject subject = SecurityUtils.getSubject();
+        String userName = (String) subject.getSession().getAttribute("userName");
+        UserInfo userInfo = userService.getUserInfo(userName);
+        return userInfo.getFullName();
     }
 }
