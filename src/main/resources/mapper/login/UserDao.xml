@@ -27,6 +27,7 @@
          full_name,
          user_name,
          user_pass,
+         role_id,
          create_time,
          create_user,
          update_time,
@@ -37,6 +38,7 @@
         #{fullName},
         #{userName},
         #{userPass},
+        #{roleId},
         #{createTime},
         #{createUser},
         #{updateTime},
@@ -54,6 +56,55 @@
         <where>
             delete_flag = 0
             and user_name = #{userName}
+        </where>
+    </update>
+    <!--更新用户信息-->
+    <update id="updateUser" parameterType="com.example.room.entity.UserInfo">
+        update user
+        <set>
+            <if test="null != fullName and '' != fullName">
+                full_name = #{fullName},
+            </if>
+            <if test="null != roleId and '' != roleId">
+                role_id = #{roleId},
+            </if>
+            <if test="null != userPass and '' != userPass">
+                user_pass = #{userPass},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        <where>
+            delete_flag = 0
+            and user_name = #{userName}
+        </where>
+    </update>
+    <!--删除用户-->
+    <update id="deleteUser" parameterType="com.example.room.entity.UserInfo">
+        update user
+        <set>
+            delete_flag = 1,
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        <where>
+            <if test="null != userName and '' != userName">
+                user_name = #{userName}
+            </if>
+            <if test="null != userNames and userNames.size()>0">
+                and user_name in
+                <foreach collection="userNames" separator="," open="(" close=")" item="item">
+                    #{item}
+                </foreach>
+            </if>
         </where>
     </update>
 </mapper>

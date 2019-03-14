@@ -1,0 +1,76 @@
+package com.example.room.controller;
+
+import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.entity.TeacherInfo;
+import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.TeacherService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+ * @author yangna
+ * @date 2019/3/13
+ */
+@RestController
+@RequestMapping("/teacher")
+public class TeacherController {
+    @Autowired
+    private TeacherService teacherService;
+
+    /**
+     * 分页查询宿管员信息
+     *
+     * @param teacherInfo
+     * @return
+     */
+    @PostMapping("findTeacherForPage")
+    public MessageBody findTeacherForPage(@RequestBody TeacherInfo teacherInfo) {
+        return MessageBody.getMessageBody(true, teacherService.getTeacherForPage(teacherInfo));
+    }
+
+    /**
+     * 新增宿管员信息
+     *
+     * @param teacherInfo
+     * @return
+     */
+    @PostMapping("addTeacher")
+    public MessageBody addTeacher(@RequestBody TeacherInfo teacherInfo) {
+        if (teacherService.addTeacher(teacherInfo) <= 0) {
+            throw new SaleBusinessException("新增失败");
+        }
+        return MessageBody.getMessageBody(true, "新增成功");
+    }
+
+    /**
+     * 更新宿管员信息
+     *
+     * @param teacherInfo
+     * @return
+     */
+    @PostMapping("updateTeacher")
+    public MessageBody updateTeacher(@RequestBody TeacherInfo teacherInfo) {
+        if (teacherService.updateTeacher(teacherInfo) <= 0) {
+            throw new SaleBusinessException("更新失败");
+        }
+        return MessageBody.getMessageBody(true, "更新成功");
+    }
+
+    /**
+     * 删除宿管员信息
+     *
+     * @param teacherInfo
+     * @return
+     */
+    @PostMapping("deleteTeacher")
+    public MessageBody deleteTeacher(@RequestBody TeacherInfo teacherInfo) {
+        if (teacherService.deleteTeacher(teacherInfo) <= 0) {
+            throw new SaleBusinessException("删除失败");
+        }
+        return MessageBody.getMessageBody(true, "删除成功");
+    }
+}
+

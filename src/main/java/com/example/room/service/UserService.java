@@ -27,4 +27,18 @@ public interface UserService {
      * @return
      */
     public int userForgetPass(UserInfo userInfo);
+
+    /**
+     * 修改用户信息
+     * @param userInfo
+     * @return
+     */
+    public int updateUser(UserInfo userInfo);
+
+    /**
+     * 删除用户信息
+     * @param userInfo
+     * @return
+     */
+    public int deleteUser(UserInfo userInfo);
 }

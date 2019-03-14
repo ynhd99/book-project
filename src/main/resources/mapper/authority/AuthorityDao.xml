@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.AuthorityDao">
+    <!--查询权限信息-->
+    <select id="getAuthorityTree" parameterType="com.example.room.entity.AuthorityInfo">
+        select id,authority_name authoriyName,authority_code authorityCode,parent_id parentId
+        from authority
+        <where>
+            delete_flag = 0
+        </where>
+    </select>
+    <!--查询角色信息-->
+    <select id="getRoleList"  resultType="com.example.room.entity.RoleInfo">
+        select id,role_code roleCode,role_name roleName
+        from role
+        where delete_flag = 0
+    </select>
+</mapper>

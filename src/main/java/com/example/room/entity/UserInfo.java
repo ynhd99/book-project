@@ -7,6 +7,7 @@ import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * @author yangna
@@ -24,4 +25,6 @@ public class UserInfo extends Base implements Serializable {
     private String userPass;
     @NotBlank(message = "旧密码不能为空",groups = Update.class)
     private String oldUserPass;
+    private String roleId;
+    private List<String> userNames;
 }

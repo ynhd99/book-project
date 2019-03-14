@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.StaffDao">
+    <!--分页查询宿管员信息-->
+    <select id="getStaffForPage" resultType="com.example.room.entity.StaffInfo">
+        select id,staff_name staffName,staff_code staffCode,staff_phone staffPhone,staff_sex staffSex
+        from staff
+        <where>
+            delete_flag = 0
+            <if test="null != queryString and '' != queryString">
+                and staff_code like concat('%',#{queryString},'%') or staff_name like concat('%',#{queryString},'%')
+            </if>
+        </where>
+    </select>
+    <!--编辑宿管员信息-->
+    <update id="updateStaff" parameterType="com.example.room.entity.StaffInfo">
+        update staff
+        <set>
+            <if test="null != staffName and '' != staffName">
+                staff_name = #{staffName},
+            </if>
+            <if test="null != staffCode and '' != staffCode">
+                staff_code = #{staffCode},
+            </if>
+            <if test="null != staffPhone and '' != staffPhone">
+                staff_phone = #{staffPhone},
+            </if>
+            <if test="null != staffSex and '' != staffSex">
+                staff_sex = #{staffSex},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        <where>
+            delete_flag = 0
+            and id = #{id}
+        </where>
+    </update>
+    <!--新增宿管员信息-->
+    <insert id="addStaff" parameterType="com.example.room.entity.StaffInfo">
+        insert into staff
+        (
+        id,
+        staff_name,
+        staff_code,
+        staff_phone,
+        staff_sex,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{staffName},
+        #{staffCode},
+        #{staffPhone},
+        #{staffSex},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--删除宿管员信息-->
+    <update id="deleteStaff">
+        update staff
+        set delete_flag =1
+        where id = #{id}
+    </update>
+    <!--根据编码获取宿管员信息-->
+    <select id="getDataByCode" resultType="com.example.room.entity.StaffInfo">
+        select *
+        from staff
+        where delete_flag = 0 and staff_code = #{code}
+    </select>
+</mapper>

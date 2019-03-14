@@ -1,6 +1,7 @@
 package com.example.room.entity;
 
 import com.example.room.common.advice.validatorGroup.Add;
+import com.example.room.common.advice.validatorGroup.Update;
 import com.example.room.entity.common.Base;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -21,7 +22,7 @@ public class CollegeInfo extends Base {
     /**
      * 学院名称
      */
-    @NotBlank(message = "学院名称不能为空",groups = {Add.class})
+    @NotBlank(message = "学院名称不能为空",groups = {Add.class, Update.class})
     private String collegeName;
     /**
      * 查询字段

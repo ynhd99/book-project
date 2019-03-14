@@ -23,8 +23,7 @@ public class Base implements Serializable {
     private Date updateTime;
     private String updateUser;
     private int delete_flag;
-    @NotNull(message = "要修改得状态值不能为空", groups = UpdateStatus.class)
-    private int Status;
+    private Integer status;
     private int page;
     private int size;
 }

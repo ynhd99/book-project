@@ -37,7 +37,7 @@ public class UserController {
     MessageBody getUserInfo(@Validated @RequestBody UserInfo userInfo) {
         Map<String, String> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
-        subject.getSession().setAttribute("userName",userInfo.getUserName());
+        subject.getSession().setAttribute("userName", userInfo.getUserName());
         UsernamePasswordToken token = new UsernamePasswordToken(userInfo.getUserName(), userInfo.getUserPass());
         try {
             //登录
@@ -56,8 +56,8 @@ public class UserController {
 
     @PostMapping("userRegister")
     MessageBody userRegister(@Validated({Add.class, Default.class}) @RequestBody UserInfo userInfo) {
-        userInfo.setCreateTime(new Date());
-        userInfo.setUpdateTime(new Date());
+        userInfo.setCreateUser(getUser());
+        userInfo.setUpdateUser(getUser());
         int num = userService.userRegister(userInfo);
         if (num <= 0) {
             throw new SaleBusinessException("注册失败");
@@ -71,6 +71,23 @@ public class UserController {
             throw new SaleBusinessException("重置失败");
         }
         return MessageBody.getMessageBody(true, "修改成功");
+    }
+
+    @PostMapping("updateUser")
+    public MessageBody updateUser(@RequestBody UserInfo userInfo) {
+        if (userService.updateUser(userInfo) <= 0) {
+            throw new SaleBusinessException("修改失败");
+        }
+        return MessageBody.getMessageBody(true, "修改成功");
+    }
+
+    @PostMapping("deleteUser")
+    public MessageBody deleteUser(@RequestBody UserInfo userInfo) {
+        userInfo.setUpdateUser(getUser());
+        if (userService.deleteUser(userInfo) <= 0) {
+            throw new SaleBusinessException("删除失败");
+        }
+        return MessageBody.getMessageBody(true, "删除成功");
     }
 
     @RequestMapping(value = "unAnth")

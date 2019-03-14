@@ -4,7 +4,6 @@ import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.dao.CollegeDao;
 import com.example.room.entity.CollegeInfo;
-import com.example.room.entity.RoomEntity;
 import com.example.room.service.CollegeService;
 import com.example.room.utils.common.AirUtils;
 import com.example.room.utils.common.UUIDGenerator;
@@ -58,5 +57,43 @@ public class CollegeServiceImpl implements CollegeService {
         PageHelper.startPage(collegeInfo.getPage(), collegeInfo.getSize());
         PageInfo<CollegeInfo> pageInfo = new PageInfo<>(collegeDao.findDataForPage(collegeInfo));
         return pageInfo;
+    }
+
+    /**
+     * 更新学院状态
+     *
+     * @param collegeInfo
+     * @return
+     */
+    @Override
+    public int updateStatus(CollegeInfo collegeInfo) {
+        collegeInfo.setUpdateTime(new Date());
+        collegeInfo.setUpdateUser(userController.getUser());
+        return collegeDao.updateStatus(collegeInfo);
+    }
+
+    /**
+     * 删除学院
+     *
+     * @param collegeInfo
+     * @return
+     */
+    @Override
+    public int delete(CollegeInfo collegeInfo) {
+        collegeInfo.setUpdateTime(new Date());
+        collegeInfo.setUpdateUser(userController.getUser());
+        return collegeDao.delete(collegeInfo);
+    }
+
+    /**
+     * 修改学院
+     * @param collegeInfo
+     * @return
+     */
+    @Override
+    public int update(CollegeInfo collegeInfo) {
+        collegeInfo.setUpdateTime(new Date());
+        collegeInfo.setUpdateUser(userController.getUser());
+        return collegeDao.update(collegeInfo);
     }
 }

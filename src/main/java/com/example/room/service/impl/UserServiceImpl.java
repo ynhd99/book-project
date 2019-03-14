@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSONObject;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.groups.Default;
+import java.util.Date;
 
 /**
  * @author yangna
@@ -50,9 +51,11 @@ public class UserServiceImpl implements UserService {
         //判断用户名是否已经注册过
         UserInfo user = userDao.getUserInfo(userInfo.getUserName());
         if (AirUtils.hv(user)) {
-            throw new SaleBusinessException("改手机号已经注册过");
+            throw new SaleBusinessException("该编号已经注册过");
         }
         userInfo.setId(UUIDUtils.getUUID());
+        userInfo.setCreateTime(new Date());
+        userInfo.setUpdateTime(new Date());
         return userDao.userRegister(userInfo);
     }
 
@@ -63,6 +66,30 @@ public class UserServiceImpl implements UserService {
             throw new SaleBusinessException("旧密码输入错误");
         }
         return userDao.userForgetPass(userInfo);
+    }
+
+    /**
+     * 修改用户信息
+     *
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public int updateUser(UserInfo userInfo) {
+        userInfo.setUpdateTime(new Date());
+        return userDao.updateUser(userInfo);
+    }
+
+    /**
+     * 删除用户信息
+     *
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public int deleteUser(UserInfo userInfo) {
+        userInfo.setUpdateTime(new Date());
+        return userDao.deleteUser(userInfo);
     }
 
 }

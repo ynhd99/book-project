@@ -14,5 +14,7 @@ public interface UserDao {
     public UserInfo getUserInfo(String userName);
     public int userRegister(UserInfo userInfo);
     public int userForgetPass(UserInfo userInfo);
+    public int updateUser(UserInfo userInfo);
+    public int deleteUser(UserInfo userInfo);
 }
 

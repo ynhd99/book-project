@@ -46,5 +46,5 @@ dependencies {
     compile group: 'org.apache.shiro', name: 'shiro-core', version: '1.4.0'
     compile group: 'org.apache.shiro', name: 'shiro-spring', version: '1.4.0'
     compile group: 'org.crazycake', name: 'shiro-redis', version: '3.2.2'
-
+    compile group: 'io.swagger', name: 'swagger-annotations', version: '2.0.0-rc2'
 }

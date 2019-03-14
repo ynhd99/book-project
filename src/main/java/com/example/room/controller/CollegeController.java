@@ -44,8 +44,53 @@ public class CollegeController {
      * @return
      */
     @PostMapping("findDataForPage")
-    public MessageBody findDataForPage(@RequestBody  CollegeInfo collegeInfo) {
+    public MessageBody findDataForPage(@RequestBody CollegeInfo collegeInfo) {
         PageInfo<CollegeInfo> pageInfo = collegeService.findDataForPage(collegeInfo);
         return MessageBody.getMessageBody(true, pageInfo);
+    }
+
+    /**
+     * 更新学院状态
+     *
+     * @param collegeInfo
+     * @return
+     */
+    @PostMapping("updateStatus")
+    public MessageBody updateStatus(@RequestBody CollegeInfo collegeInfo) {
+        int num = collegeService.updateStatus(collegeInfo);
+        if (num <= 0) {
+            throw new SaleBusinessException("更新失败");
+        }
+        return MessageBody.getMessageBody(true, "更新成功");
+    }
+
+    /**
+     * 更新学院
+     *
+     * @param collegeInfo
+     * @return
+     */
+    @PostMapping("update")
+    public MessageBody update(@RequestBody CollegeInfo collegeInfo) {
+        int num = collegeService.update(collegeInfo);
+        if (num <= 0) {
+            throw new SaleBusinessException("更新失败");
+        }
+        return MessageBody.getMessageBody(true, "更新成功");
+    }
+
+    /**
+     * 更新学院状态
+     *
+     * @param collegeInfo
+     * @return
+     */
+    @PostMapping("delete")
+    public MessageBody delete(@RequestBody CollegeInfo collegeInfo) {
+        int num = collegeService.delete(collegeInfo);
+        if (num <= 0) {
+            throw new SaleBusinessException("删除失败");
+        }
+        return MessageBody.getMessageBody(true, "删除成功");
     }
 }

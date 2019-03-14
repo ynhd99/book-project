@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.TeacherDao">
+    <!--分页查询宿管员信息-->
+    <select id="getTeacherForPage" resultType="com.example.room.entity.TeacherInfo">
+        select t.id,t.teacher_name teacherName,t.teacher_code teacherCode,t.teacher_phone teacherPhone,t.teacher_sex
+        teacherSex,c.college_name collegeName
+        from teacher t
+        left join college c on t.college_id = c.id
+        <where>
+            t.delete_flag = 0
+            <if test="null != queryString and '' != queryString">
+                and t.teacher_code like concat('%',#{queryString},'%') or t.teacher_name like
+                concat('%',#{queryString},'%')
+            </if>
+        </where>
+    </select>
+    <!--编辑宿管员信息-->
+    <update id="updateTeacher" parameterType="com.example.room.entity.TeacherInfo">
+        update teacher
+        <set>
+            <if test="null != teacherName and '' != teacherName">
+                teacher_name = #{teacherName},
+            </if>
+            <if test="null != teacherCode and '' != teacherCode">
+                teacher_code = #{teacherCode},
+            </if>
+            <if test="null != teacherPhone and '' != teacherPhone">
+                teacher_phone = #{teacherPhone},
+            </if>
+            <if test="null != teacherSex and '' != teacherSex">
+                teacher_sex = #{teacherSex},
+            </if>
+            <if test="null != collegeId and '' != collegeId">
+                college_id = #{collegeId},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        <where>
+            delete_flag = 0
+            and id = #{id}
+        </where>
+    </update>
+    <!--新增宿管员信息-->
+    <insert id="addTeacher" parameterType="com.example.room.entity.TeacherInfo">
+        insert into teacher
+        (
+        id,
+        teacher_name,
+        teacher_code,
+        teacher_phone,
+        teacher_sex,
+        college_id,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{teacherName},
+        #{teacherCode},
+        #{teacherPhone},
+        #{teacherSex},
+        #{collegeId},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--删除宿管员信息-->
+    <update id="deleteTeacher">
+        update teacher
+        set delete_flag =1
+        where id = #{id}
+    </update>
+    <!--根据编码获取宿管员信息-->
+    <select id="getDataByCode" resultType="com.example.room.entity.TeacherInfo">
+        select *
+        from teacher
+        where delete_flag = 0 and teacher_code = #{code}
+    </select>
+    <!--根据id获取宿管员信息-->
+    <select id="getDataById" resultType="string">
+        select teacher_code
+        from teacher
+        where id = #{id}
+    </select>
+</mapper>

@@ -33,4 +33,23 @@ public interface CollegeDao {
      * @return
      */
     CollegeInfo getDataByCode(String code);
+
+    /**
+     * 修改学院状态
+     * @param collegeInfo
+     * @return
+     */
+    int updateStatus(CollegeInfo collegeInfo);
+    /**
+     * 删除学院
+     * @param collegeInfo
+     * @return
+     */
+    int delete(CollegeInfo collegeInfo);
+    /**
+     * 修改学院信息
+     * @param collegeInfo
+     * @return
+     */
+    int update(CollegeInfo collegeInfo);
 }
