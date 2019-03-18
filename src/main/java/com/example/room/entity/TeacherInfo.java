@@ -9,12 +9,36 @@ import lombok.Data;
  */
 @Data
 public class TeacherInfo extends Base {
+    /**
+     * 辅导员名称
+     */
     private String teacherName;
+    /**
+     * 辅导员编码
+     */
     private String teacherCode;
+    /**
+     * 辅导员性别
+     */
     private String teacherSex;
+    /**
+     * 辅导员手机号
+     */
     private String teacherPhone;
+    /**
+     * 角色id
+     */
     private String roleId;
+    /**
+     * 模糊查询字段
+     */
     private String queryString;
+    /**
+     * 学院名称
+     */
     private String collegeName;
+    /**
+     * 学院id
+     */
     private String collegeId;
 }

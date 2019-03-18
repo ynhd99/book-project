@@ -102,14 +102,14 @@
         c.class_code classCode,
         c.status
         FROM class c
-        left join college cg on c.college_id = cg.id
+        INNER join college cg on c.college_id = cg.id
         <where>
             c.delete_flag = 0
             <if test="null != id and '' != id">
                 and c.id = #{id}
             </if>
             <if test="null != collegeId and '' != collegeId">
-                and c.college_id = #{collegeId}
+                and cg.id = #{collegeId}
             </if>
             <if test="null != className and '' != className">
                 and c.class_name = #{className}

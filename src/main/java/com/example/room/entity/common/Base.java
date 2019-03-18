@@ -22,7 +22,7 @@ public class Base implements Serializable {
     private String createUser;
     private Date updateTime;
     private String updateUser;
-    private int delete_flag;
+    private int deleteFlag;
     private Integer status;
     private int page;
     private int size;

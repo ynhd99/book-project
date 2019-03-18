@@ -4,10 +4,11 @@
 <mapper namespace="com.example.room.dao.TeacherDao">
     <!--分页查询宿管员信息-->
     <select id="getTeacherForPage" resultType="com.example.room.entity.TeacherInfo">
-        select t.id,t.teacher_name teacherName,t.teacher_code teacherCode,t.teacher_phone teacherPhone,t.teacher_sex
-        teacherSex,c.college_name collegeName
+        select t.id,t.teacher_name teacherName,t.teacher_code teacherCode,t.teacher_phone teacherPhone,u.role_id roleId,t.college_id collegeId,
+        t.teacher_sex teacherSex,c.college_name collegeName
         from teacher t
-        left join college c on t.college_id = c.id
+        inner join college c on t.college_id = c.id
+        inner join user u on t.teacher_code = u.user_name
         <where>
             t.delete_flag = 0
             <if test="null != queryString and '' != queryString">
