@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.GoodsDao">
+    <!--新增公共财产信息-->
+    <insert id="addGoods" parameterType="com.example.room.entity.GoodsInfo">
+        insert into goods
+        (
+        id,
+        goods_code,
+        goods_name,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{goodsCode},
+        #{goodsName},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--分页查询物品信息-->
+    <select id="getGoodsForPage" resultType="com.example.room.entity.GoodsInfo">
+        select id,goods_code goodsCode,goods_name goodsName,status
+        from goods
+        <where>
+            delete_flag = 0
+            <if test="null != status and '' != status">
+                and status = #{status}
+            </if>
+            <if test="null != queryString and '' != queryString">
+                and goods_code like concat('%',#{queryString},'%') or goods_name like concat('%',#{queryString},'%')
+            </if>
+        </where>
+    </select>
+    <!--更新班级管理数据-->
+    <update id="updateGoods">
+        UPDATE goods
+        <set>
+            <if test="null != goodsName and '' != goodsName">
+                goods_name = #{goodsName},
+            </if>
+            <if test="null != status">
+                status = #{status},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser},
+            </if>
+        </set>
+        WHERE
+        delete_flag = 0
+        and id = #{id}
+    </update>
+    <!--删除物品信息-->
+    <update id="deleteGoods">
+        update goods
+        <set>
+            delete_flag = 1
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <!--根据编码获取物品信息-->
+    <select id="getGoodsByCode" resultType="com.example.room.entity.GoodsInfo">
+        select *
+        from goods
+        <where>
+            delete_flag = 0
+            and goods_code = #{code}
+        </where>
+    </select>
+</mapper>

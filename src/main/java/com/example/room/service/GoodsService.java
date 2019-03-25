@@ -1,6 +1,7 @@
 package com.example.room.service;
 
 import com.example.room.entity.GoodsInfo;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
 public interface GoodsService {
     /**
      * 新增物品信息
+     *
      * @param goodsInfo
      * @return
      */
@@ -18,13 +20,15 @@ public interface GoodsService {
 
     /**
      * 分页查询物品信息
+     *
      * @param goodsInfo
      * @return
      */
-    List<GoodsInfo> getGoodsForPage(GoodsInfo goodsInfo);
+    PageInfo<GoodsInfo> getGoodsForPage(GoodsInfo goodsInfo);
 
     /**
      * 更新物品信息
+     *
      * @param goodsInfo
      * @return
      */
@@ -32,6 +36,7 @@ public interface GoodsService {
 
     /**
      * 删除物品信息
+     *
      * @param goodsInfo
      * @return
      */
