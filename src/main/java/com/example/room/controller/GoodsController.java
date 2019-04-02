@@ -1,7 +1,6 @@
 package com.example.room.controller;
 
 import com.example.room.common.exception.SaleBusinessException;
-import com.example.room.entity.CollegeInfo;
 import com.example.room.entity.GoodsInfo;
 import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.GoodsService;
