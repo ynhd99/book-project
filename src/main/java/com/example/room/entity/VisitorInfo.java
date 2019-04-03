@@ -29,7 +29,7 @@ public class VisitorInfo extends Base {
      * 访问开始时间
      */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
-    private Date starTime;
+    private Date startTime;
     /**
      * 访问结束时间
      */

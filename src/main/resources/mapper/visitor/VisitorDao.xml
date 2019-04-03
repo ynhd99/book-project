@@ -23,7 +23,7 @@
         #{identityCode},
         #{phoneNumber},
         #{receptName},
-        #{starTime},
+        #{startTime},
         #{remark},
         #{createTime},
         #{createUser},
@@ -68,17 +68,14 @@
     </update>
     <select id="findVisitorForPage" resultType="com.example.room.entity.VisitorInfo">
         select id,visitor_name visitorName,identity_code identityCode,phone_number phoneNumber,
-        start_time startTime,end_time endTime,recept_name receptName
+        start_time startTime,end_time endTime,recept_name receptName,remark
         from visitor
         <where>
             <if test="null != visitorName and '' != visitorName">
-                visitor_name = #{visitorName}
+                visitor_name like concat('%',#{visitorName},'%')
             </if>
             <if test="null != startTime">
-                and start_time &gt;= #{startTime}
-            </if>
-            <if test="null != endTime">
-                and end_time &lt;= #{endTime}
+                and start_time &gt;= #{startTime} and start_time &lt;= #{endTime}
             </if>
         </where>
     </select>
