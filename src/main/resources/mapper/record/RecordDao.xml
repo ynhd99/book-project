@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.RecordDao">
+    <!--新增公告内容-->
+    <insert id="addRecord" parameterType="com.example.room.entity.RecordInfo">
+        insert into record
+        (
+        id,
+        title,
+        content,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values (
+        #{id},
+        #{title},
+        #{content},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--更新公告信息-->
+    <update id="updateRecord" parameterType="com.example.room.entity.RecordInfo">
+        update record
+        <set>
+            <if test="null != title and '' != title">
+                title = #{title},
+            </if>
+            <if test="null != content and '' != content">
+                content = #{content},
+            </if>
+            <if test="null != updateTime">
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--查询公告列表-->
+    <select id="findRecordList" resultType="com.example.room.entity.RecordInfo">
+        select id,title,content
+        from record
+        where delete_flag = 0
+        order by update_time desc
+    </select>
+    <!--删除公告-->
+    <update id="deleteRecord">
+        update record
+        set
+        delete_flag = 1
+        where id = #{id}
+    </update>
+</mapper>
