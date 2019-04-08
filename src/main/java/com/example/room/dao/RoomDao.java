@@ -15,12 +15,14 @@ import java.util.List;
 public interface RoomDao {
     /**
      * 新增仓库信息
+     *
      * @return
      */
     int addRoom(RoomEntity roomEntity);
 
     /**
      * 根据编码获取仓库信息
+     *
      * @param deportCode
      * @return
      */
@@ -28,20 +30,15 @@ public interface RoomDao {
 
     /**
      * 获取仓库档案
+     *
      * @param roomEntity
      * @return
      */
     List<RoomEntity> findDataForPage(RoomEntity roomEntity);
 
     /**
-     * 更新仓库状态
-     * @param roomEntity
-     * @return
-     */
-    int updateStatus(RoomEntity roomEntity);
-
-    /**
      * 删除仓库
+     *
      * @param roomEntity
      * @return
      */
@@ -49,8 +46,9 @@ public interface RoomDao {
 
     /**
      * 修改仓库信息
+     *
      * @param roomEntity
      * @return
      */
-    int update(RoomEntity roomEntity);
+    int updateRoom(RoomEntity roomEntity);
 }

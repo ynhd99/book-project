@@ -15,7 +15,7 @@ public class RoomEntity extends Base {
      * 宿舍号
      */
     @NotBlank(message = "宿舍号不能为空")
-    private String RoomCode;
+    private String roomCode;
     /**
      * 类别id
      */
@@ -24,6 +24,10 @@ public class RoomEntity extends Base {
      * 类别名称
      */
     private String cateName;
+    /**
+     * 父类名称
+     */
+    private String cateParentName;
     /**
      * 模糊查询字段
      */
@@ -44,4 +48,5 @@ public class RoomEntity extends Base {
      * 宿舍当前人数
      */
     private int roomCurrent;
+
 }

@@ -20,14 +20,6 @@ public interface RoomService {
      * @return
      */
     PageInfo<RoomEntity> findDataForPage(RoomEntity roomEntity);
-
-    /**
-     * 更新仓库状态
-     *
-     * @param roomEntity
-     * @return
-     */
-    int updateStatus(RoomEntity roomEntity);
     /**
      * 删除仓库
      * @param roomEntity
@@ -39,5 +31,5 @@ public interface RoomService {
      * @param roomEntity
      * @return
      */
-    int update(RoomEntity roomEntity);
+    int updateRoom(RoomEntity roomEntity);
 }

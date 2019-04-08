@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.RepairDao">
+    <!--新增维修情况-->
+    <insert id="addRepair" parameterType="com.example.room.entity.RepairInfo">
+        insert into repair
+        (
+        id,
+        room_id,
+        goods_id,
+        remark,
+        repair_date,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{roomId},
+        #{goodsId},
+        #{remark},
+        #{repairDate},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--更新维修信息-->
+    <update id="updateRepair" parameterType="com.example.room.entity.RepairInfo">
+        update repair
+        <set>
+            <if test="null != roomId and '' != roomId">
+                room_id = #{roomId},
+            </if>
+            <if test="null != goodsId and '' != goodsId">
+                goods_id = #{goodsId}
+            </if>
+            <if test="null != repairDate and '' != repairDate">
+                repair_date = #{repairDate}
+            </if>
+            <if test="null != remark and '' != remark">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--分页查询维修信息-->
+    <select id="findRepairForPage" resultType="com.example.room.entity.RepairInfo">
+        select r.id,rm.room_code roomCode,g.goods_name goodsName,r.remark,r.repair_date repairDate
+        from repair r
+        inner join room rm on r.room_id = rm.id
+        inner join goods g on r.goods_id = g.id
+        <where>
+            <if test="null != repairDate">
+                 r.repair_date = #{repairDate}
+            </if>
+            <if test="null != roomCode and '' != roomCode">
+                and rm.room_code like concat('%',#{roomCode},'%')
+            </if>
+            <if test="null != queryString and '' != queryString">
+                and g.goods_name like concat('%',#{queryString},'%') or g.goods_code like concat('%',#{queryString},'%')
+            </if>
+            <if test="null != remark and '' != remark">
+                and r.remark = #{remark}
+            </if>
+        </where>
+    </select>
+</mapper>

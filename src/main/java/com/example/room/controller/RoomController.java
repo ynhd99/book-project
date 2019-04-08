@@ -1,7 +1,6 @@
 package com.example.room.controller;
 
 import com.example.room.common.advice.validatorGroup.Delete;
-import com.example.room.common.advice.validatorGroup.UpdateStatus;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.RoomEntity;
 import com.example.room.entity.dto.MessageBody;
@@ -49,25 +48,12 @@ public class RoomController {
     }
 
     /**
-     * 修改宿舍档案状态
-     *
-     * @return
-     */
-    @PostMapping("updateStatus")
-    public MessageBody updateStatus(@Validated({UpdateStatus.class}) @RequestBody RoomEntity roomEntity) {
-        if (roomService.updateStatus(roomEntity) < 0) {
-            throw new SaleBusinessException("更新仓库状态失败");
-        }
-        return MessageBody.getMessageBody(true, "更新仓库状态成功");
-    }
-
-    /**
      * 删除宿舍
      *
      * @return
      */
     @PostMapping("deleteRoom")
-    public MessageBody deleteRoom(@Validated({Delete.class}) @RequestBody RoomEntity roomEntity){
+    public MessageBody deleteRoom(@Validated({Delete.class}) @RequestBody RoomEntity roomEntity) {
         if (roomService.deleteRoom(roomEntity) < 0) {
             throw new SaleBusinessException("删除仓库失败");
         }
@@ -80,9 +66,9 @@ public class RoomController {
      * @param roomEntity
      * @return
      */
-    @PostMapping("update")
-    public MessageBody update(@RequestBody RoomEntity roomEntity) {
-        if (roomService.update(roomEntity) < 0) {
+    @PostMapping("updateRoom")
+    public MessageBody updateRoom(@RequestBody RoomEntity roomEntity) {
+        if (roomService.updateRoom(roomEntity) < 0) {
             throw new SaleBusinessException("修改失败");
         }
         return MessageBody.getMessageBody(true, "修改成功");

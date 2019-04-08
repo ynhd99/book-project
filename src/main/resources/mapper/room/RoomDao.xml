@@ -11,7 +11,6 @@
         room_code,
         building_id,
         room_count,
-        room_current,
         create_time,
         create_user,
         update_time,
@@ -23,14 +22,13 @@
         #{roomCode},
         #{buildingId},
         #{roomCount},
-        #{roomCurrent},
         #{createTime},
         #{createUser},
         #{updateTime},
         #{updateUser}
         )
     </insert>
-    <!--根据编码获取仓库-->
+    <!--根据编码获取宿舍-->
     <select id="getRoomByCode" parameterType="string" resultType="com.example.room.entity.RoomEntity">
         select *
         from room
@@ -40,32 +38,26 @@
         </where>
     </select>
     <!--分页查询宿舍信息-->
-    <select id="findDataForPage" parameterType="com.example.room.entity.RoomEntity" resultType="com.example.room.entity.RoomEntity">
-        select r.id,r.room_code rc.cateName,b.building_name,r.room_count,r.status
+    <select id="findDataForPage" parameterType="com.example.room.entity.RoomEntity"
+            resultType="com.example.room.entity.RoomEntity">
+        select r.id,r.room_code roomCode,rc.cate_name cateName,b.building_name buildingName,r.room_count
+        roomCount,r.status,rcc.cate_name cateParentName,rc.id cateId,b.id buildingId
         from room r
         inner join room_category rc on r.cate_id = rc.id
-        inner join buildind b on r.building_id = b.id
+        inner join room_category rcc on rc.parent_id = rcc.id
+        inner join building b on r.building_id = b.id
         <where>
             r.delete_flag = 0
             <if test="null != queryString and '' != queryString">
-            and r.room_code like concat('%',#{queryString},'%')
+                and r.room_code like concat('%',#{queryString},'%')
+            </if>
+            <if test="null != status">
+                and r.status = #{status}
             </if>
         </where>
         order by r.status asc ,r.update_time desc
     </select>
-    <!--更新仓库状态-->
-    <update id="updateStatus" parameterType="com.example.room.entity.RoomEntity">
-        update room
-        <set>
-            status = #{status},
-            update_time = #{updateTime}
-        </set>
-        <where>
-            delete_flag = 0
-            and id = #{id}
-        </where>
-    </update>
-    <!--删除仓库-->
+    <!--删除宿舍信息-->
     <update id="deleteRoom" parameterType="com.example.room.entity.RoomEntity">
         update room
         <set>
@@ -75,12 +67,24 @@
             id = #{id}
         </where>
     </update>
-    <!--更新仓库信息-->
-    <update id="update" parameterType="com.example.room.entity.RoomEntity">
+    <!--更新宿舍信息-->
+    <update id="updateRoom" parameterType="com.example.room.entity.RoomEntity">
         update room
         <set>
             <if test="null != roomCode and '' != roomCode">
                 room_code = #{roomCode},
+            </if>
+            <if test="null != cateId and '' != cateId">
+                cate_id = #{cateId},
+            </if>
+            <if test="null != buildingId and '' != buildingId">
+                building_id = #{buildingId},
+            </if>
+            <if test="null != roomCount and '' != roomCount">
+                room_count = #{roomCount},
+            </if>
+            <if test="null != status">
+                status = #{status}
             </if>
         </set>
         <where>

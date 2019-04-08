@@ -3,11 +3,13 @@ package com.example.room.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.room.common.advice.validatorGroup.UpdateStatus;
 import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.controller.UserController;
 import com.example.room.dao.RoomDao;
 import com.example.room.entity.RoomEntity;
 import com.example.room.service.RoomService;
 import com.example.room.utils.UUIDUtils;
 import com.example.room.utils.common.AirUtils;
+import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -27,6 +29,8 @@ public class RoomServiceImpl implements RoomService {
     private static Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
     @Autowired
     private RoomDao roomDao;
+    @Autowired
+    private UserController userController;
 
     /**
      * 新增仓库信息
@@ -39,11 +43,13 @@ public class RoomServiceImpl implements RoomService {
         //判断仓库编码是否已经存在
         RoomEntity deport = roomDao.getRoomByCode(roomEntity.getRoomCode());
         if (AirUtils.hv(deport)) {
-            throw new SaleBusinessException("宿舍号已经存在");
+            throw new SaleBusinessException("宿舍号已经存在,请重新输入");
         }
+        roomEntity.setId(UUIDGenerator.getUUID());
         roomEntity.setCreateTime(new Date());
         roomEntity.setUpdateTime(new Date());
-        roomEntity.setId(UUIDUtils.getUUID());
+        roomEntity.setCreateUser(userController.getUser());
+        roomEntity.setUpdateUser(userController.getUser());
         log.info("新增仓库信息，请求参数为:{}", JSONObject.toJSONString(roomEntity));
         return roomDao.addRoom(roomEntity);
     }
@@ -63,18 +69,6 @@ public class RoomServiceImpl implements RoomService {
     }
 
     /**
-     * 更新仓库状态
-     *
-     * @param roomEntity
-     * @return
-     */
-    @Override
-    public int updateStatus(@Validated({UpdateStatus.class}) RoomEntity roomEntity) {
-        roomEntity.setUpdateTime(new Date());
-        return roomDao.updateStatus(roomEntity);
-    }
-
-    /**
      * 删除仓库
      *
      * @param roomEntity
@@ -82,7 +76,9 @@ public class RoomServiceImpl implements RoomService {
      */
     @Override
     public int deleteRoom(RoomEntity roomEntity) {
+        //封装参数
         roomEntity.setUpdateTime(new Date());
+        roomEntity.setCreateUser(userController.getUser());
         return roomDao.deleteRoom(roomEntity);
     }
 
@@ -93,8 +89,10 @@ public class RoomServiceImpl implements RoomService {
      * @return
      */
     @Override
-    public int update(RoomEntity roomEntity) {
+    public int updateRoom(RoomEntity roomEntity) {
+        //封装参数
         roomEntity.setUpdateTime(new Date());
-        return roomDao.update(roomEntity);
+        roomEntity.setCreateUser(userController.getUser());
+        return roomDao.updateRoom(roomEntity);
     }
 }
