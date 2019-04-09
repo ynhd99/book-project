@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.HealthDao">
+    <!--新增卫生检查情况-->
+    <insert id="addHealth" parameterType="com.example.room.entity.HealthInfo">
+        insert into health
+        (
+        id,
+        room_id,
+        check_date,
+        check_point,
+        remark,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        (
+        #{id},
+        #{roomId},
+        #{checkDate},
+        #{checkPoint},
+        #{remark},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--修改检查信息-->
+    <update id="updateHealth" parameterType="com.example.room.entity.HealthInfo">
+        update health
+        <set>
+            <if test="null != roomId and '' != roomId">
+                room_id = #{roomId},
+            </if>
+            <if test="null != checkDate">
+                check_date = #{checkDate},
+            </if>
+            <if test="null != checkPoint">
+                check_point = #{checkPoint},
+            </if>
+            <if test="null != remark and '' != remark">
+                remark = #{remark}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--分页查询检查信息-->
+    <select id="findHealthForPage" resultType="com.example.room.entity.HealthInfo">
+        select h.id,h.room_id roomId,r.room_code roomCode,h.check_date checkDate,h.check_point checkPoint,h.remark
+        from health h
+        inner join room r on h.room_id = r.id
+        <where>
+            <if test="null != roomCode and '' != roomCode">
+                r.room_code like concat('%',#{roomCode},'%')
+            </if>
+            <if test="null != startDate">
+                and h.check_date &gt;= #{startDate}
+            </if>
+            <if test="null != endDate">
+                and h.check_date &lt;= #{endDate}
+            </if>
+        </where>
+    </select>
+</mapper>
