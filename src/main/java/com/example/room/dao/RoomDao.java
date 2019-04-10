@@ -51,4 +51,5 @@ public interface RoomDao {
      * @return
      */
     int updateRoom(RoomEntity roomEntity);
+    List<RoomEntity> findRoomList(RoomEntity roomEntity);
 }

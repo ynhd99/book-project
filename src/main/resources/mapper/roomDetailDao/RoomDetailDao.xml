@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper   PUBLIC "-//ibatis.apache.org//DTD Mapper 3.0//EN"
+        "http://ibatis.apache.org/dtd/ibatis-3-mapper.dtd">
+<mapper namespace="com.example.room.dao.RoomDetailDao">
+    <!--新增住宿人员-->
+    <insert id="addRoomDetail" parameterType="com.example.room.entity.RoomDetailInfo">
+        insert into room_detail
+        (
+        id,
+        room_id,
+        student_id,
+        check_date,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" open="(" separator="),(" close=")">
+            #{item.id},
+            #{item.roomId},
+            #{item.studentId},
+            #{item.checkDate},
+            #{item.createTime},
+            #{item.createUser},
+            #{item.updateTime},
+            #{item.updateUser}
+        </foreach>
+    </insert>
+    <!--删除住宿人员-->
+    <update id="deleteRoomDetail">
+        update room_detail
+        set delete_flag = 1
+        where id = #{id}
+    </update>
+    <!--查询详情-->
+    <select id="getRoomDetailList" resultType="com.example.room.entity.RoomDetailInfo">
+        select rd.id,rd.room_id roomId,s.student_name studentName,c.college_name collegeName,cs.class_name
+        className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,rd.student_id studentId,
+        s.student_code studentCode
+        from room_detail rd
+        inner join student s on rd.student_id = s.id
+        inner join college c on s.college_id = c.id
+        inner join class cs on s.class_id = cs.id
+        <where>
+            rd.delete_flag = 0
+            and rd.room_id in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </where>
+    </select>
+    <!--批量删除住宿人员-->
+    <update id="deleteRoomDetails">
+        update room_detail
+        set delete_flag = 1
+        <where>
+            id in
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+    <!--根据idhuod详情-->
+    <select id="getDetailById" resultType="com.example.room.entity.RoomDetailInfo">
+        select id,student_id studentId
+        from room_detail
+        where room_id = #{id}
+    </select>
+    <!--查询详情-->
+    <select id="getRoomDetailForPage" resultType="com.example.room.entity.RoomDetailInfo">
+        select r.room_code roomCode,b.building_code buildingCode,s.student_name studentName,c.college_name collegeName,cs.class_name
+        className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,s.student_code
+        studentCode
+        from room_detail rd
+        inner join room r on rd.room_id = r.id
+        inner join building b on r.building_id = b.id
+        inner join student s on rd.student_id = s.id
+        inner join college c on s.college_id = c.id
+        inner join class cs on s.class_id = cs.id
+        <where>
+            rd.delete_flag = 0
+            <if test="null != buildingId and '' != buildingId">
+                and b.id = #{buildingId}
+            </if>
+            <if test="null != roomId and '' != roomId">
+                and r.id = #{roomId}
+            </if>
+            <if test="null != collegeId and '' != collegeId">
+                and c.college_id = #{collegeId}
+            </if>
+            <if test="null != classId and '' != classId">
+                and cs.id = #{classId}
+            </if>
+            <if test="null != studentCode and '' != studentCode">
+                and s.student_code like concat('%',#{studentCode},'%')
+            </if>
+            <if test="null != studentName and '' != studentName">
+                and s.student_name like concat('%',#{studentName},'%')
+            </if>
+            <if test="null != checkDate">
+                and rd.check_date = #{checkDate}
+            </if>
+        </where>
+    </select>
+</mapper>

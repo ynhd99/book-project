@@ -4,6 +4,7 @@ import com.example.room.entity.common.Base;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @author yangna
@@ -47,6 +48,10 @@ public class RoomEntity extends Base {
     /**
      * 宿舍当前人数
      */
-    private int roomCurrent;
+    private int currentCount;
+    /**
+     * 容纳学生详情
+     */
+    private List<RoomDetailInfo> roomDetailInfoList;
 
 }

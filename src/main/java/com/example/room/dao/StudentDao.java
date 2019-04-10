@@ -60,4 +60,28 @@ public interface StudentDao {
      * @return
      */
     String getDataById(String id);
+
+    /**
+     * 新增入住标志
+     *
+     * @param ids
+     * @return
+     */
+    int addSettleFlag(List<String> ids);
+
+    /**
+     * 删除入住标志
+     *
+     * @param id
+     * @return
+     */
+    int deleteSettleFlag(String id);
+
+    /**
+     * 批量删除
+     *
+     * @param ids
+     * @return
+     */
+    int deleteSettleFlags(List<String> ids);
 }

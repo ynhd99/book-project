@@ -49,4 +49,8 @@ public class StudentInfo extends Base {
      * 班级名称
      */
     private String className;
+    /**
+     * 入住标志
+     */
+    private int settleFlag;
 }

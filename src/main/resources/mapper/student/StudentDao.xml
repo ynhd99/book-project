@@ -5,7 +5,8 @@
     <!--分页查询学生信息-->
     <select id="getStudentForPage" resultType="com.example.room.entity.StudentInfo">
         select s.id,s.student_name studentName,s.student_code studentCode,s.student_phone studentPhone,s.student_sex
-        studentSex,c.college_name collegeName,cc.class_name className,s.college_id collegeId,s.class_id classId,u.role_id roleId
+        studentSex,c.college_name collegeName,cc.class_name className,s.college_id collegeId,s.class_id
+        classId,u.role_id roleId,s.settle_flag settleFlag
         from student s
         inner join college c on s.college_id = c.id
         inner join class cc on s.class_id = cc.id
@@ -106,4 +107,37 @@
         from student
         where id = #{id}
     </select>
+    <update id="addSettleFlag">
+        update student
+        <set>
+            settle_flag = 1
+        </set>
+        <where>
+            id in
+            <foreach collection="list" item="item" close=")" open="(" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+    <update id="deleteSettleFlag">
+        update student
+        <set>
+            settle_flag = 0
+        </set>
+        <where>
+            id = #{id}
+        </where>
+    </update>
+    <update id="deleteSettleFlags">
+        update student
+        <set>
+            settle_flag = 0
+        </set>
+        <where>
+            id in
+            <foreach collection="list" item="item" close=")" open="(" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </update>
 </mapper>

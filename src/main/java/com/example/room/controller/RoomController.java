@@ -46,6 +46,16 @@ public class RoomController {
     public MessageBody findDataForPage(@RequestBody RoomEntity roomEntity) {
         return MessageBody.getMessageBody(true, roomService.findDataForPage(roomEntity));
     }
+    /**
+     * 查询宿舍档案
+     *
+     * @param roomEntity
+     * @return
+     */
+    @PostMapping("findRoomList")
+    public MessageBody findRoomList(@RequestBody RoomEntity roomEntity) {
+        return MessageBody.getMessageBody(true, roomService.findRoomList(roomEntity));
+    }
 
     /**
      * 删除宿舍

@@ -3,6 +3,8 @@ package com.example.room.service;
 import com.example.room.entity.RoomEntity;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
+
 /**
  * @author yangna
  * @date 2019/2/21
@@ -32,4 +34,11 @@ public interface RoomService {
      * @return
      */
     int updateRoom(RoomEntity roomEntity);
+
+    /**
+     * 查询宿舍列表
+     * @param roomEntity
+     * @return
+     */
+    List<RoomEntity> findRoomList(RoomEntity roomEntity);
 }
