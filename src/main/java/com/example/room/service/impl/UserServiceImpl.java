@@ -17,6 +17,7 @@ import org.springframework.validation.annotation.Validated;
 
 import javax.validation.groups.Default;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangna
@@ -90,6 +91,17 @@ public class UserServiceImpl implements UserService {
     public int deleteUser(UserInfo userInfo) {
         userInfo.setUpdateTime(new Date());
         return userDao.deleteUser(userInfo);
+    }
+
+    /**
+     * 获取权限信息
+     *
+     * @param userInfo
+     * @return
+     */
+    @Override
+    public List<String> getAuthorityList(UserInfo userInfo) {
+        return userDao.getAuthorityList(userInfo);
     }
 
 }

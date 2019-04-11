@@ -53,4 +53,8 @@ public class StudentInfo extends Base {
      * 入住标志
      */
     private int settleFlag;
+    /**
+     * 床位号
+     */
+    private int bedCount;
 }

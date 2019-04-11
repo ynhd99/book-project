@@ -10,6 +10,7 @@
         room_id,
         student_id,
         check_date,
+        bed_count,
         create_time,
         create_user,
         update_time,
@@ -20,6 +21,7 @@
             #{item.roomId},
             #{item.studentId},
             #{item.checkDate},
+            #{item.bedCount},
             #{item.createTime},
             #{item.createUser},
             #{item.updateTime},
@@ -36,7 +38,7 @@
     <select id="getRoomDetailList" resultType="com.example.room.entity.RoomDetailInfo">
         select rd.id,rd.room_id roomId,s.student_name studentName,c.college_name collegeName,cs.class_name
         className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,rd.student_id studentId,
-        s.student_code studentCode
+        s.student_code studentCode,rd.bed_count bedCount
         from room_detail rd
         inner join student s on rd.student_id = s.id
         inner join college c on s.college_id = c.id
@@ -68,9 +70,9 @@
     </select>
     <!--查询详情-->
     <select id="getRoomDetailForPage" resultType="com.example.room.entity.RoomDetailInfo">
-        select r.room_code roomCode,b.building_code buildingCode,s.student_name studentName,c.college_name collegeName,cs.class_name
-        className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,s.student_code
-        studentCode
+        select rd.id,r.room_code roomCode,b.building_code buildingCode,s.student_name studentName,c.college_name
+        collegeName,cs.class_name className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,s.student_code
+        studentCode,rd.bed_count bedCount
         from room_detail rd
         inner join room r on rd.room_id = r.id
         inner join building b on r.building_id = b.id

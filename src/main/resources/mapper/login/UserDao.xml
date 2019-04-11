@@ -107,4 +107,24 @@
             </if>
         </where>
     </update>
+    <!---获取权限-->
+    <select id="getAuthorityList" parameterType="com.example.room.entity.UserInfo" resultType="string">
+        select a.authority_code
+        from user u
+        inner join role_authority ra on u.role_id = ra.role_id
+        inner join authority a on ra.authority_id = a.id
+        where u.user_name = #{userName}
+    </select>
+    <!--批量获取id-->
+    <select id="getUserList" resultType="string">
+        select role_id
+        from user
+        <where>
+            delete_flag = 0
+            and role_id in
+            <foreach collection="list" item="item" close=")" open="(" separator=",">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.groups.Default;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -35,7 +36,7 @@ public class UserController {
 
     @PostMapping("userLogin")
     MessageBody getUserInfo(@Validated @RequestBody UserInfo userInfo) {
-        Map<String, String> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         Subject subject = SecurityUtils.getSubject();
         subject.getSession().setAttribute("userName", userInfo.getUserName());
         UsernamePasswordToken token = new UsernamePasswordToken(userInfo.getUserName(), userInfo.getUserPass());
@@ -44,6 +45,8 @@ public class UserController {
             subject.login(token);
             String sessionId = (String) subject.getSession().getId();
             map.put("sessionId", sessionId);
+            List<String> codes = userService.getAuthorityList(userInfo);
+            map.put("authority",codes);
         } catch (IncorrectCredentialsException e) {
             throw new SaleBusinessException("密码错误,请重新输入密码");
         } catch (AuthenticationException e) {

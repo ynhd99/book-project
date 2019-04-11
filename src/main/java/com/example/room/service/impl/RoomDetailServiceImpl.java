@@ -5,7 +5,6 @@ import com.example.room.dao.RoomDetailDao;
 import com.example.room.dao.StudentDao;
 import com.example.room.entity.RoomDetailInfo;
 import com.example.room.service.RoomDetailService;
-import com.example.room.service.StudentService;
 import com.example.room.utils.common.AirUtils;
 import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
@@ -13,12 +12,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -72,7 +68,7 @@ public class RoomDetailServiceImpl implements RoomDetailService {
 
     @Override
     public PageInfo<RoomDetailInfo> getRoomDetailForPage(RoomDetailInfo roomDetailInfo) {
-        PageHelper.startPage(roomDetailInfo.getPage(),roomDetailInfo.getSize());
+        PageHelper.startPage(roomDetailInfo.getPage(), roomDetailInfo.getSize());
         PageInfo<RoomDetailInfo> pageInfo = new PageInfo<>(roomDetailDao.getRoomDetailForPage(roomDetailInfo));
         return pageInfo;
     }

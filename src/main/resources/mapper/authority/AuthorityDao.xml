@@ -2,17 +2,109 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.room.dao.AuthorityDao">
     <!--查询权限信息-->
-    <select id="getAuthorityTree" parameterType="com.example.room.entity.AuthorityInfo">
-        select id,authority_name authoriyName,authority_code authorityCode,parent_id parentId
+    <select id="getAuthorityTree" resultType="com.example.room.entity.AuthorityInfo">
+        select id,authority_name authorityName,authority_code authorityCode,parent_id parentId
         from authority
         <where>
             delete_flag = 0
         </where>
     </select>
+    <!--查询权限信息-->
+    <select id="getAuthorityTreeById" resultType="com.example.room.entity.AuthorityInfo">
+        select a.id,a.authority_name authorityName,a.authority_code authorityCode,a.parent_id parentId
+        from role_authority ra
+        inner join authority a on ra.authority_id = a.id
+        <where>
+            ra.delete_flag = 0 and ra.role_id = #{id}
+        </where>
+    </select>
     <!--查询角色信息-->
-    <select id="getRoleList"  resultType="com.example.room.entity.RoleInfo">
-        select id,role_code roleCode,role_name roleName
+    <select id="getRoleList" resultType="com.example.room.entity.RoleInfo">
+        select id,role_code roleCode,role_name roleName,status
         from role
         where delete_flag = 0
     </select>
+    <!--批量查询权限id-->
+    <select id="getAuthorityList" resultType="com.example.room.entity.RoleAuthority">
+        select id authorityId
+        from authority
+        <where>
+            delete_flag = 0
+            <foreach collection="list" separator="," open="(" close=")" item="item">
+                and authority_code = #{item}
+            </foreach>
+        </where>
+    </select>
+    <!--新增角色信息-->
+    <insert id="addRole" parameterType="com.example.room.entity.RoleInfo">
+        insert into role
+        (
+        id,
+        role_code,
+        role_name,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values (
+        #{id},
+        #{roleCode},
+        #{roleName},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        )
+    </insert>
+    <!--批量新增角色权限关系-->
+    <insert id="addRoleAuthority" parameterType="com.example.room.entity.RoleAuthority">
+        insert into role_authority
+        (
+        id,
+        role_id,
+        authority_id,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" close=")" open="(" separator="),(">
+            #{item.id},
+            #{item.roleId},
+            #{item.authorityId},
+            #{item.createTime},
+            #{item.createUser},
+            #{item.updateTime},
+            #{item.updateUser}
+        </foreach>
+    </insert>
+    <!--更新角色信息-->
+    <update id="updateRole" parameterType="com.example.room.entity.RoleInfo">
+        update role
+        <set>
+            <if test="null != roleName and '' != roleName">
+                role_name = #{roleName},
+            </if>
+            <if test="null != status">
+                status = #{status}
+            </if>
+        </set>
+    </update>
+    <!--删除角色信息-->
+    <update id="deleteRole" parameterType="com.example.room.entity.RoleInfo">
+        update role
+        set delete_flag = 1
+        where id = #{id}
+    </update>
+    <!--批量删除权限信息-->
+    <update id="batchDeleteAuthority" parameterType="string">
+        update authority
+        set delete_flag = 0
+        <where>
+            role_id in
+            <foreach collection="list" open="(" separator="," close=")" item="item">
+                #{item}
+            </foreach>
+        </where>
+    </update>
 </mapper>

@@ -2,6 +2,8 @@ package com.example.room.service;
 
 import com.example.room.entity.UserInfo;
 
+import java.util.List;
+
 /**
  * @author yangna
  * @date 2019/2/11
@@ -41,4 +43,11 @@ public interface UserService {
      * @return
      */
     public int deleteUser(UserInfo userInfo);
+
+    /**
+     * 获取用户权限
+     * @param userInfo
+     * @return
+     */
+    List<String> getAuthorityList(UserInfo userInfo);
 }

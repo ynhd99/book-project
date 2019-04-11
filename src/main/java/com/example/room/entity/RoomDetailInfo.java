@@ -18,8 +18,9 @@ public class RoomDetailInfo extends Base {
     private String studentCode;
     private String buildingId;
     private String buildingCode;
-    private int bedCount;
+    private Integer bedCount;
     private String collegeName;
+    private String collegeId;
     private String className;
     private String classId;
     private String studentName;
