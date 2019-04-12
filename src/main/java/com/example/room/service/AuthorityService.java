@@ -16,7 +16,7 @@ public interface AuthorityService {
      *
      * @return
      */
-    public List<AuthorityInfo> getAuthorityTree(String id);
+    public List<AuthorityInfo> getAuthorityTree();
 
     /**
      * 得到角色信息
@@ -40,4 +40,11 @@ public interface AuthorityService {
      * @return
      */
     int updateRole(RoleInfo roleInfo);
+    /**
+     * 删除角色信息
+     *
+     * @param roleInfo
+     * @return
+     */
+    int deleteRole(RoleInfo roleInfo);
 }

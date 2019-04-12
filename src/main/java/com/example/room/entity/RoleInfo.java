@@ -35,5 +35,8 @@ public class RoleInfo extends Base {
      * 权限list
      */
     private List<RoleAuthority> roleAuthorityList;
-
+    /**
+     * 已经选择的权限
+     */
+    private List<String> nodeIdList;
 }

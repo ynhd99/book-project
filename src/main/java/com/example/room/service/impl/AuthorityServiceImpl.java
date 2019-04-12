@@ -39,18 +39,8 @@ public class AuthorityServiceImpl implements AuthorityService {
      * @return
      */
     @Override
-    public List<AuthorityInfo> getAuthorityTree(String id) {
+    public List<AuthorityInfo> getAuthorityTree() {
         List<AuthorityInfo> authorityInfos = authorityDao.getAuthorityTree();
-        if (AirUtils.hv(id)) {
-            List<AuthorityInfo> presentList = authorityDao.getAuthorityTreeById(id);
-            authorityInfos.forEach(item -> {
-                presentList.forEach(index -> {
-                    if (item.getId().equals(index.getId())) {
-                        item.setIsSelect(1);
-                    }
-                });
-            });
-        }
         List<AuthorityInfo> oneList = new ArrayList<>();
         //生成父亲树
         authorityInfos.forEach(item -> {
@@ -64,7 +54,7 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     /**
-     * 查询角色信息
+     * 查询角色信息和关系信息
      *
      * @param roleInfo
      * @return
@@ -74,6 +64,7 @@ public class AuthorityServiceImpl implements AuthorityService {
         PageHelper.startPage(roleInfo.getPage(), roleInfo.getSize());
         List<RoleInfo> roleInfoList = authorityDao.getRoleList(roleInfo);
         List<String> ids = roleInfoList.stream().map(e -> e.getId()).collect(Collectors.toList());
+        //获取角色的人数
         if (AirUtils.hv(ids)) {
             List<String> userInfos = userDao.getUserList(ids);
             roleInfoList.forEach(e -> {
@@ -84,6 +75,16 @@ public class AuthorityServiceImpl implements AuthorityService {
                     }
                 });
                 e.setCount(idss.size());
+            });
+            List<RoleAuthority> roleAuthorities = authorityDao.getRoleAuthorityList(ids);
+            roleInfoList.forEach(item -> {
+                List<String> idss = new ArrayList<>();
+                roleAuthorities.forEach(index -> {
+                    if (index.getRoleId().equals(item.getId())) {
+                        idss.add(index.getAuthorityId());
+                    }
+                });
+                item.setNodeIdList(idss);
             });
         }
         PageInfo<RoleInfo> pageInfo = new PageInfo<>(roleInfoList);
@@ -128,9 +129,35 @@ public class AuthorityServiceImpl implements AuthorityService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateRole(RoleInfo roleInfo) {
-        authorityDao.batchDeleteAuthority(roleInfo.getId());
-        authorityDao.addRoleAuthority(roleInfo.getRoleAuthorityList());
+        //如果进行了权限的修改再进行删除原来的新增新的
+        if (AirUtils.hv(roleInfo.getRoleAuthorityList())) {
+            authorityDao.batchDeleteAuthority(roleInfo.getId());
+            roleInfo.getRoleAuthorityList().forEach(item -> {
+                item.setId(UUIDGenerator.getUUID());
+                item.setRoleId(roleInfo.getId());
+                item.setCreateTime(new Date());
+                item.setCreateUser(userController.getUser());
+                item.setUpdateTime(new Date());
+                item.setUpdateUser(userController.getUser());
+            });
+            authorityDao.addRoleAuthority(roleInfo.getRoleAuthorityList());
+        }
         return authorityDao.updateRole(roleInfo);
+    }
+
+    /**
+     * 删除角色信息
+     *
+     * @param roleInfo
+     * @return
+     */
+    @Override
+    public int deleteRole(RoleInfo roleInfo) {
+        //如果存在权限信息则删除权限信息
+        if (AirUtils.hv(roleInfo.getNodeIdList())) {
+            authorityDao.batchDeleteAuthority(roleInfo.getId());
+        }
+        return authorityDao.deleteRole(roleInfo);
     }
 
     /**

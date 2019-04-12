@@ -33,7 +33,7 @@ public class AuthorityController {
      */
     @PostMapping("getAuthorityList")
     public MessageBody getAuthorityList(@RequestBody RoleAuthority roleAuthority) {
-        List<AuthorityInfo> roleInfoList = authorityService.getAuthorityTree(roleAuthority.getId());
+        List<AuthorityInfo> roleInfoList = authorityService.getAuthorityTree();
         return MessageBody.getMessageBody(true, roleInfoList);
     }
 
@@ -65,5 +65,20 @@ public class AuthorityController {
             throw new SaleBusinessException("更新失败");
         }
         return MessageBody.getMessageBody(true, "更新成功");
+    }
+
+    /**
+     * 更新角色信息
+     *
+     * @param roleInfo
+     * @return
+     */
+    @PostMapping("deleteRole")
+    public MessageBody deleteRole(@RequestBody RoleInfo roleInfo) {
+        int num = authorityService.deleteRole(roleInfo);
+        if (num <= 0) {
+            throw new SaleBusinessException("删除失败");
+        }
+        return MessageBody.getMessageBody(true, "删除成功");
     }
 }

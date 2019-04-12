@@ -62,15 +62,25 @@ public interface AuthorityDao {
     int updateRole(RoleInfo roleInfo);
 
     /**
-     * 根据id获取权限信息
+     * 批量获取角色权限关系
+     *
      * @return
      */
-    List<AuthorityInfo> getAuthorityTreeById(String id);
+    List<RoleAuthority> getRoleAuthorityList(List<String> ids);
 
     /**
      * 批量删除权限
+     *
      * @param id
      * @return
      */
     int batchDeleteAuthority(String id);
+
+    /**
+     * 删除角色信息
+     *
+     * @param roleInfo
+     * @return
+     */
+    int deleteRole(RoleInfo roleInfo);
 }

@@ -9,13 +9,16 @@
             delete_flag = 0
         </where>
     </select>
-    <!--查询权限信息-->
-    <select id="getAuthorityTreeById" resultType="com.example.room.entity.AuthorityInfo">
-        select a.id,a.authority_name authorityName,a.authority_code authorityCode,a.parent_id parentId
-        from role_authority ra
-        inner join authority a on ra.authority_id = a.id
+    <!--批量查询权限信息-->
+    <select id="getRoleAuthorityList" resultType="com.example.room.entity.RoleAuthority" parameterType="string">
+        select role_id roleId,authority_id authorityId
+        from role_authority
         <where>
-            ra.delete_flag = 0 and ra.role_id = #{id}
+            delete_flag = 0
+            and role_id in
+            <foreach collection="list" item="item" close=")" separator="," open="(">
+                #{item}
+            </foreach>
         </where>
     </select>
     <!--查询角色信息-->
@@ -89,6 +92,7 @@
                 status = #{status}
             </if>
         </set>
+        where delete_flag = 0 and id = #{id}
     </update>
     <!--删除角色信息-->
     <update id="deleteRole" parameterType="com.example.room.entity.RoleInfo">
@@ -98,13 +102,10 @@
     </update>
     <!--批量删除权限信息-->
     <update id="batchDeleteAuthority" parameterType="string">
-        update authority
-        set delete_flag = 0
+        update role_authority
+        set delete_flag = 1
         <where>
-            role_id in
-            <foreach collection="list" open="(" separator="," close=")" item="item">
-                #{item}
-            </foreach>
+            role_id = #{id}
         </where>
     </update>
 </mapper>
