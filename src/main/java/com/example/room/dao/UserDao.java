@@ -1,6 +1,7 @@
 package com.example.room.dao;
 
 import com.example.room.entity.UserInfo;
+import com.example.room.entity.dto.StaffInfoDto;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -26,5 +27,13 @@ public interface UserDao {
     List<String> getAuthorityList(UserInfo userInfo);
 
     List<String> getUserList(List<String> ids);
+
+    StaffInfoDto getStudentInfo(String userName);
+
+    StaffInfoDto getTeacherInfo(String userName);
+
+    StaffInfoDto getStaffInfo(String userName);
+
+    UserInfo getDataByCode(String code);
 }
 

@@ -5,6 +5,7 @@ import com.example.room.common.advice.validatorGroup.Update;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.UserInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.entity.dto.StaffInfoDto;
 import com.example.room.service.UserService;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
@@ -45,8 +46,11 @@ public class UserController {
             subject.login(token);
             String sessionId = (String) subject.getSession().getId();
             map.put("sessionId", sessionId);
+            //获取权限信息
             List<String> codes = userService.getAuthorityList(userInfo);
             map.put("authority",codes);
+            StaffInfoDto staffInfoDto = userService.getStaffInfo(userInfo.getUserName());
+            map.put("userInfo",staffInfoDto);
         } catch (IncorrectCredentialsException e) {
             throw new SaleBusinessException("密码错误,请重新输入密码");
         } catch (AuthenticationException e) {
@@ -69,7 +73,7 @@ public class UserController {
     }
 
     @PostMapping("userForgetPass")
-    public MessageBody userForgetPass(@Validated({Update.class, Default.class}) @RequestBody UserInfo userInfo) {
+    public MessageBody userForgetPass(@RequestBody UserInfo userInfo) {
         if (userService.userForgetPass(userInfo) <= 0) {
             throw new SaleBusinessException("重置失败");
         }

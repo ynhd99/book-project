@@ -1,6 +1,7 @@
 package com.example.room.service;
 
 import com.example.room.entity.UserInfo;
+import com.example.room.entity.dto.StaffInfoDto;
 
 import java.util.List;
 
@@ -50,4 +51,10 @@ public interface UserService {
      * @return
      */
     List<String> getAuthorityList(UserInfo userInfo);
+    /**
+     * 获取用户权限
+     * @param userName
+     * @return
+     */
+    StaffInfoDto getStaffInfo(String userName);
 }

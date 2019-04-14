@@ -3,6 +3,7 @@ package com.example.room.service.impl;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.dao.TeacherDao;
+import com.example.room.dao.UserDao;
 import com.example.room.entity.TeacherInfo;
 import com.example.room.entity.UserInfo;
 import com.example.room.service.TeacherService;
@@ -29,6 +30,8 @@ public class TeacherServiceImpl implements TeacherService {
     private TeacherDao teacherDao;
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserDao userDao;
 
     /**
      * 分页查询宿管员信息
@@ -93,7 +96,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Transactional
     @Override
     public int addTeacher(TeacherInfo teacherInfo) {
-        if (AirUtils.hv(teacherDao.getDataByCode(teacherInfo.getTeacherCode()))) {
+        if (AirUtils.hv(userDao.getDataByCode(teacherInfo.getTeacherCode()))) {
             throw new SaleBusinessException("编码已经存在");
         }
         teacherInfo.setId(UUIDGenerator.getUUID());

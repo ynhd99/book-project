@@ -5,6 +5,7 @@ import com.example.room.common.advice.validatorGroup.Update;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.dao.UserDao;
 import com.example.room.entity.UserInfo;
+import com.example.room.entity.dto.StaffInfoDto;
 import com.example.room.service.UserService;
 import com.example.room.utils.UUIDUtils;
 import com.example.room.utils.common.AirUtils;
@@ -102,6 +103,30 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<String> getAuthorityList(UserInfo userInfo) {
         return userDao.getAuthorityList(userInfo);
+    }
+
+    /**
+     * 获取到用户的详细信息
+     *
+     * @param userName
+     * @return
+     */
+    @Override
+    public StaffInfoDto getStaffInfo(String userName) {
+        StaffInfoDto staffInfoDto;
+        staffInfoDto = userDao.getStudentInfo(userName);
+        if (AirUtils.hv(staffInfoDto)) {
+            return staffInfoDto;
+        }
+        staffInfoDto = userDao.getTeacherInfo(userName);
+        if (AirUtils.hv(staffInfoDto)) {
+            return staffInfoDto;
+        }
+        staffInfoDto = userDao.getStaffInfo(userName);
+        if (AirUtils.hv(staffInfoDto)) {
+            return staffInfoDto;
+        }
+        return null;
     }
 
 }
