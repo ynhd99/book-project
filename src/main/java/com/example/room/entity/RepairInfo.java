@@ -45,4 +45,8 @@ public class RepairInfo extends Base {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date endDate;
+    /**
+     * 申请人
+     */
+    private String repairPerson;
 }
