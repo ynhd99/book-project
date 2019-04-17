@@ -17,6 +17,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author yangna
@@ -42,7 +44,22 @@ public class StudentServiceImpl implements StudentService {
     @Override
     public PageInfo<StudentInfo> getStudentForPage(StudentInfo studentInfo) {
         PageHelper.startPage(studentInfo.getPage(), studentInfo.getSize());
-        PageInfo<StudentInfo> studentInfoPageInfo = new PageInfo<StudentInfo>(studentDao.getStudentForPage(studentInfo));
+        List<StudentInfo> studentInfos = studentDao.getStudentForPage(studentInfo);
+        //获取学生的床位信息
+        List<String> ids = studentInfos.stream().map(e -> e.getId()).collect(Collectors.toList());
+        if (AirUtils.hv(ids)) {
+            List<StudentInfo> studentInfoList = studentDao.getBedCountById(ids);
+            if (AirUtils.hv(studentInfoList)) {
+                studentInfos.forEach(index -> {
+                    studentInfoList.forEach(item -> {
+                        if (item.getId().equals(index.getId())) {
+                            index.setBedCount(item.getBedCount());
+                        }
+                    });
+                });
+            }
+        }
+        PageInfo<StudentInfo> studentInfoPageInfo = new PageInfo<StudentInfo>(studentInfos);
         return studentInfoPageInfo;
     }
 

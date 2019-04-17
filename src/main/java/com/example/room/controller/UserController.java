@@ -51,6 +51,7 @@ public class UserController {
             map.put("authority",codes);
             StaffInfoDto staffInfoDto = userService.getStaffInfo(userInfo.getUserName());
             map.put("userInfo",staffInfoDto);
+            map.put("fullName",getUser());
         } catch (IncorrectCredentialsException e) {
             throw new SaleBusinessException("密码错误,请重新输入密码");
         } catch (AuthenticationException e) {

@@ -84,4 +84,12 @@ public interface StudentDao {
      * @return
      */
     int deleteSettleFlags(List<String> ids);
+
+    /**
+     * 根据id获取床号
+     *
+     * @param ids
+     * @return
+     */
+    List<StudentInfo> getBedCountById(List<String> ids);
 }

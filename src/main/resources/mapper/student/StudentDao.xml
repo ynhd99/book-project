@@ -140,4 +140,16 @@
             </foreach>
         </where>
     </update>
+    <!--根据学生id获取床号-->
+    <select id="getBedCountById" resultType="com.example.room.entity.StudentInfo">
+        select student_id id,bed_count bedCount
+        from room_detail
+        <where>
+            delete_flag = 0 and
+            student_id in
+            <foreach collection="list" item="item" close=")" separator="," open="(">
+                #{item}
+            </foreach>
+        </where>
+    </select>
 </mapper>
