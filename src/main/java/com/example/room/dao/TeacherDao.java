@@ -60,4 +60,14 @@ public interface TeacherDao {
      * @return
      */
     String getDataById(String id);
+    /**
+     * 批量删除老师表
+     * @param ids
+     * @return
+     */
+    int batchDelete(List<String> ids);
+    /**
+     * 批量删除用户表
+     */
+    int batchDeleteUser(List<String> ids);
 }

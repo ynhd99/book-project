@@ -92,4 +92,17 @@ public interface StudentDao {
      * @return
      */
     List<StudentInfo> getBedCountById(List<String> ids);
+
+    /**
+     * 批量删除学生表
+     *
+     * @param ids
+     * @return
+     */
+    int batchDelete(List<String> ids);
+
+    /**
+     * 批量删除用户表
+     */
+    int batchDeleteUser(List<String> ids);
 }

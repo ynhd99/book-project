@@ -49,6 +49,9 @@
             <if test="null != repairPerson and '' != repairPerson">
                 repair_person = #{repairPerson},
             </if>
+            <if test="null != reason and '' != reason">
+                reason = #{reason},
+            </if>
             <if test="null != status">
                 status = #{status}
             </if>
@@ -58,7 +61,7 @@
     <!--分页查询维修信息-->
     <select id="findRepairForPage" resultType="com.example.room.entity.RepairInfo">
         select r.id,rm.room_code roomCode,g.goods_name goodsName,r.remark,r.repair_date repairDate,r.room_id
-        roomId,r.goods_id goodsId,r.status,r.repair_person repairPerson
+        roomId,r.goods_id goodsId,r.status,r.repair_person repairPerson,r.reason
         from repair r
         inner join room rm on r.room_id = rm.id
         inner join goods g on r.goods_id = g.id

@@ -4,7 +4,8 @@
 <mapper namespace="com.example.room.dao.StaffDao">
     <!--分页查询宿管员信息-->
     <select id="getStaffForPage" resultType="com.example.room.entity.StaffInfo">
-        select s.id,s.staff_name staffName,s.staff_code staffCode,s.staff_phone staffPhone,s.staff_sex staffSex,u.role_id roleId
+        select s.id,s.staff_name staffName,s.staff_code staffCode,s.staff_phone staffPhone,s.staff_sex
+        staffSex,u.role_id roleId
         from staff s
         inner join user u on s.staff_code = u.user_name
         <where>
@@ -80,4 +81,27 @@
         from staff
         where delete_flag = 0 and staff_code = #{code}
     </select>
+    <!--批量删除宿管员-->
+    <update id="batchDelete" parameterType="list">
+        update staff
+        set delete_flag = 1
+        <where>
+            id in
+            <foreach close=")" collection="list" item="item" open="(">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+    <!--批量删除用户表-->
+    <update id="batchDeleteUser" parameterType="list">
+    update user u
+    left join staff s on u.user_name = s.staff_code
+    set u.delete_flag = 1
+    <where>
+        s.id in
+        <foreach close=")" collection="list" item="item" open="(">
+            #{item}
+        </foreach>
+    </where>
+    </update>
 </mapper>

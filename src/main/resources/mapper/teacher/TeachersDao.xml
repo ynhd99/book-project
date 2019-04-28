@@ -4,7 +4,8 @@
 <mapper namespace="com.example.room.dao.TeacherDao">
     <!--分页查询宿管员信息-->
     <select id="getTeacherForPage" resultType="com.example.room.entity.TeacherInfo">
-        select t.id,t.teacher_name teacherName,t.teacher_code teacherCode,t.teacher_phone teacherPhone,u.role_id roleId,t.college_id collegeId,
+        select t.id,t.teacher_name teacherName,t.teacher_code teacherCode,t.teacher_phone teacherPhone,u.role_id
+        roleId,t.college_id collegeId,
         t.teacher_sex teacherSex,c.college_name collegeName
         from teacher t
         inner join college c on t.college_id = c.id
@@ -94,4 +95,27 @@
         from teacher
         where id = #{id}
     </select>
+    <!--批量删除老师-->
+    <update id="batchDelete" parameterType="list">
+        update teacher
+        set delete_flag = 1
+        <where>
+            id in
+            <foreach close=")" collection="list" item="item" open="(">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+    <!--批量删除用户表-->
+    <update id="batchDeleteUser" parameterType="list">
+    update user u
+    left join teacher s on u.user_name = s.teacher_code
+    set u.delete_flag = 1
+    <where>
+        s.id in
+        <foreach close=")" collection="list" item="item" open="(">
+            #{item}
+        </foreach>
+    </where>
+    </update>
 </mapper>

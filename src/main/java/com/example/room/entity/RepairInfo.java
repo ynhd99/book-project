@@ -49,4 +49,8 @@ public class RepairInfo extends Base {
      * 申请人
      */
     private String repairPerson;
+    /**
+     * 驳回原因
+     */
+    private String reason;
 }

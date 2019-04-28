@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangna
@@ -78,6 +79,12 @@ public class TeacherServiceImpl implements TeacherService {
     public int deleteTeacher(TeacherInfo teacherInfo) {
         teacherInfo.setUpdateTime(new Date());
         teacherInfo.setUpdateUser(userController.getUser());
+        //批量删除老师列表
+        List<String> list = teacherInfo.getDeleteTeacherList();
+        if(AirUtils.hv(list)){
+            teacherDao.batchDeleteUser(list);
+            return teacherDao.batchDelete(list);
+        }
         //删除用户表
         String userName = teacherDao.getDataById(teacherInfo.getId());
         UserInfo userInfo = new UserInfo();

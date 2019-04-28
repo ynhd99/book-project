@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangna
@@ -76,6 +77,12 @@ public class StaffServiceimpl implements StaffService {
     public int deleteStaff(StaffInfo staffInfo) {
         staffInfo.setUpdateTime(new Date());
         staffInfo.setUpdateUser(userController.getUser());
+        //批量删除宿管云列表
+        List<String> list = staffInfo.getDeleteStaffList();
+        if(AirUtils.hv(list)){
+            staffDao.batchDeleteUser(list);
+            return staffDao.batchDelete(list);
+        }
         //删除用户表
         UserInfo userInfo = new UserInfo();
         userInfo.setUserName(staffInfo.getStaffName());

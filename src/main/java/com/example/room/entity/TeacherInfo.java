@@ -3,6 +3,8 @@ package com.example.room.entity;
 import com.example.room.entity.common.Base;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author yangna
  * @date 2019/3/13
@@ -41,4 +43,8 @@ public class TeacherInfo extends Base {
      * 学院id
      */
     private String collegeId;
+    /**
+     * 批量删除老师列表
+     */
+    private List<String> deleteTeacherList;
 }

@@ -152,4 +152,27 @@
             </foreach>
         </where>
     </select>
+    <!--批量删除学生-->
+    <update id="batchDelete" parameterType="list">
+        update student
+        set delete_flag = 1
+        <where>
+            id in
+            <foreach close=")" collection="list" item="item" open="(">
+                #{item}
+            </foreach>
+        </where>
+    </update>
+    <!--批量删除用户表-->
+    <update id="batchDeleteUser" parameterType="list">
+        update user u
+        left join student s on u.user_name = s.student_code
+        set u.delete_flag = 1
+        <where>
+            s.id in
+            <foreach close=")" collection="list" item="item" open="(">
+                #{item}
+            </foreach>
+        </where>
+    </update>
 </mapper>

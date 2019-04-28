@@ -47,8 +47,22 @@ public interface StaffDao {
 
     /**
      * 根据编码获取信息
+     *
      * @param code
      * @return
      */
     StaffInfo getDataByCode(String code);
+
+    /**
+     * 批量删除宿管员表
+     *
+     * @param ids
+     * @return
+     */
+    int batchDelete(List<String> ids);
+
+    /**
+     * 批量删除用户表
+     */
+    int batchDeleteUser(List<String> ids);
 }

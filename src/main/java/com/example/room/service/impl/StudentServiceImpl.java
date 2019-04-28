@@ -95,6 +95,14 @@ public class StudentServiceImpl implements StudentService {
     public int deleteStudent(StudentInfo studentInfo) {
         studentInfo.setUpdateTime(new Date());
         studentInfo.setUpdateUser(userController.getUser());
+        //批量删除操作
+        List<String> list = studentInfo.getDeleteStudentList();
+        if (AirUtils.hv(list)) {
+            //批量删除用户表
+            studentDao.batchDeleteUser(list);
+            //批量删除学生表
+            return studentDao.batchDelete(list);
+        }
         //删除用户表
         String userName = studentDao.getDataById(studentInfo.getId());
         UserInfo userInfo = new UserInfo();

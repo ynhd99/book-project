@@ -3,6 +3,8 @@ package com.example.room.entity;
 import com.example.room.entity.common.Base;
 import lombok.Data;
 
+import java.util.List;
+
 /**
  * @author yangna
  * @date 2019/3/13
@@ -33,4 +35,8 @@ public class StaffInfo extends Base {
      * 模糊查询字段
      */
     private String queryString;
+    /**
+     * 批量删除宿管员字段
+     */
+    private List<String> deleteStaffList;
 }
