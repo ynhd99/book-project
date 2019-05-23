@@ -7,10 +7,10 @@ import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author yangna
@@ -82,5 +82,13 @@ public class RoomController {
             throw new SaleBusinessException("修改失败");
         }
         return MessageBody.getMessageBody(true, "修改成功");
+    }
+    /**
+     * 导出宿舍信息
+     */
+    @RequestMapping(value = "/exportRoom", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        roomService.exportRoom( response);
     }
 }

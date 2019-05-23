@@ -62,6 +62,9 @@ public class RoomDetailServiceImpl implements RoomDetailService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int deleteRoomDetail(RoomDetailInfo roomDetailInfo) {
+        roomDetailInfo.setUpdateTime(new Date());
+        roomDetailInfo.setUpdateUser(userController.getUser());
+        roomDetailInfo.setDeleteDate(new Date());
         studentDao.deleteSettleFlag(roomDetailInfo.getStudentId());
         return roomDetailDao.deleteRoomDetail(roomDetailInfo);
     }

@@ -5,10 +5,10 @@ import com.example.room.entity.HealthInfo;
 import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author yangna
@@ -57,5 +57,13 @@ public class HealthController {
             throw new SaleBusinessException("修改失败");
         }
         return MessageBody.getMessageBody(true, "修改成功");
+    }
+    /**
+     * 导出卫生检查信息表
+     */
+    @RequestMapping(value = "/exportHealth", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        healthService.exportHealth( response);
     }
 }

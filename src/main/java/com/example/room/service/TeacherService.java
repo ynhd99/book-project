@@ -5,6 +5,7 @@ import com.example.room.entity.TeacherInfo;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -43,4 +44,10 @@ public interface TeacherService {
      * @return
      */
     int addTeacher(TeacherInfo teacherInfo);
+    /**
+     * 导出老师信息
+     *
+     * @return
+     */
+    void exportTeacher(HttpServletResponse response);
 }

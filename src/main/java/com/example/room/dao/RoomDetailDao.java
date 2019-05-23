@@ -2,8 +2,11 @@ package com.example.room.dao;
 
 import com.example.room.entity.RoomDetailInfo;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import javax.xml.crypto.Data;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -43,7 +46,7 @@ public interface RoomDetailDao {
      * @param ids
      * @return
      */
-    int deleteRoomDetails(List<String> ids);
+    int deleteRoomDetails(@Param("list") List<String> ids, @Param("date")Date date);
     List<RoomDetailInfo> getDetailById(String id);
     List<RoomDetailInfo> getRoomDetailForPage(RoomDetailInfo roomDetailInfo);
 }

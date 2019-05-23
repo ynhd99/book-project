@@ -5,12 +5,12 @@ import java.util.List;
 import com.example.room.common.response.MessageBody;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.example.room.entity.ClassInfo;
 import com.example.room.service.ClassService;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * 班级管理控制层
@@ -101,5 +101,13 @@ public class ClassController {
             return MessageBody.getErrorMessageBody("操作失败");
         }
         return MessageBody.getInfoMessageBody(true, "操作成功");
+    }
+    /**
+     * 导出班级信息
+     */
+    @RequestMapping(value = "/exportClass", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        classService.exportClass( response);
     }
 }

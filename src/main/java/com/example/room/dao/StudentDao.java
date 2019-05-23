@@ -52,7 +52,13 @@ public interface StudentDao {
      * @return
      */
     StudentInfo getDataByCode(String code);
-
+    /**
+     * 根据编码获取信息
+     *
+     * @param codes
+     * @return
+     */
+    List<StudentInfo> getDataByCodes(List<String> codes);
     /**
      * 根据id获取信息
      *
@@ -105,4 +111,11 @@ public interface StudentDao {
      * 批量删除用户表
      */
     int batchDeleteUser(List<String> ids);
+
+    /**
+     * 批量新增学生信息
+     * @param studentInfos
+     * @return
+     */
+    int batchAddStudent(List<StudentInfo> studentInfos);
 }

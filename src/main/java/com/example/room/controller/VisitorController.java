@@ -8,6 +8,9 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 /**
  * @author yangna
  * @date 2019/4/2
@@ -59,5 +62,12 @@ public class VisitorController {
         }
         return MessageBody.getMessageBody(true, "更新成功");
     }
-
+    /**
+     * 导出外来人员访问登记信息
+     */
+    @RequestMapping(value = "/exportVisitor", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        visitorService.exportVisitor( response);
+    }
 }

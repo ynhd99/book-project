@@ -85,4 +85,17 @@
             and id = #{id}
         </where>
     </update>
+    <!--分页查询学院信息-->
+    <select id="getCollegeList" resultType="com.example.room.entity.CollegeInfo">
+        select id,college_name collegeName,college_code collegeCode,status
+        from college
+        <where>
+            delete_flag = 0
+            and college_name in
+            <foreach collection="list" item="item" close=")" open="(" separator=",">
+                #{item}
+            </foreach>
+        </where>
+        order by status asc,college_code desc
+    </select>
 </mapper>

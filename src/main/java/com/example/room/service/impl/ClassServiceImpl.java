@@ -3,19 +3,25 @@ package com.example.room.service.impl;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.entity.ClassInfo;
+import com.example.room.entity.CollegeInfo;
 import com.example.room.service.ClassService;
 import com.example.room.dao.ClassDao;
 import com.alibaba.fastjson.JSONObject;
 import com.example.room.utils.common.AirUtils;
+import com.example.room.utils.common.ExcelUtils;
 import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 
@@ -137,5 +143,31 @@ public class ClassServiceImpl implements ClassService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 导出班级信息
+     * @param response
+     */
+    @Override
+    public void exportClass(HttpServletResponse response) {
+        ClassInfo classInfo = new ClassInfo();
+        //获取到学生列表
+        List<ClassInfo> classInfos = classDao.getClassList(classInfo);
+        String header[] = {"班级编号","班级名称","所属学院","状态"};
+        String title = "班级信息表";
+        String fileName = "班级信息表";
+        int rowNum = 1;
+        HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
+        HSSFSheet sheet = workbook.getSheet(title);
+        for (ClassInfo e : classInfos) {
+            HSSFRow rows = sheet.createRow(rowNum);
+            rows.createCell(0).setCellValue(e.getClassCode());
+            rows.createCell(1).setCellValue(e.getClassName());
+            rows.createCell(2).setCellValue(e.getCollegeName());
+            rows.createCell(3).setCellValue(e.getStatus() == 0?"启用":"停用");
+            rowNum++;
+        };
+        ExcelUtils.returnExport(workbook,response,fileName);
     }
 }

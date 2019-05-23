@@ -28,4 +28,6 @@ public class RoomDetailInfo extends Base {
     private String studentPhone;
     @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
     private Date checkDate;
+    @JsonFormat(pattern = "yyyy-MM-dd", timezone = "GMT+8")
+    private Date deleteDate;
 }

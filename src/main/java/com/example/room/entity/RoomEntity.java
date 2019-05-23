@@ -44,11 +44,11 @@ public class RoomEntity extends Base {
     /**
      * 宿舍人数
      */
-    private int roomCount;
+    private Integer roomCount;
     /**
      * 宿舍当前人数
      */
-    private int currentCount;
+    private Integer currentCount;
     /**
      * 容纳学生详情
      */

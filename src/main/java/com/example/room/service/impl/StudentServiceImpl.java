@@ -9,13 +9,18 @@ import com.example.room.entity.UserInfo;
 import com.example.room.service.StudentService;
 import com.example.room.service.UserService;
 import com.example.room.utils.common.AirUtils;
+import com.example.room.utils.common.ExcelUtils;
 import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -139,5 +144,32 @@ public class StudentServiceImpl implements StudentService {
         userInfo.setUpdateUser(userController.getUser());
         userService.userRegister(userInfo);
         return studentDao.addStudent(studentInfo);
+    }
+
+    /**
+     * 导出学生信息
+     */
+    @Override
+    public void exportStudent(HttpServletResponse response){
+        StudentInfo studentInfo = new StudentInfo();
+        //获取到学生列表
+        List<StudentInfo> studentInfos = studentDao.getStudentForPage(studentInfo);
+        String header[] = {"学号","姓名","学院","班级","性别","手机号"};
+        String title = "学生信息表";
+        String fileName = "学生信息表";
+        int rowNum = 1;
+        HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
+        HSSFSheet sheet = workbook.getSheet(title);
+        for (StudentInfo e : studentInfos) {
+            HSSFRow rows = sheet.createRow(rowNum);
+            rows.createCell(0).setCellValue(e.getStudentCode());
+            rows.createCell(1).setCellValue(e.getStudentName());
+            rows.createCell(2).setCellValue(e.getCollegeName());
+            rows.createCell(3).setCellValue(e.getClassName());
+            rows.createCell(4).setCellValue(e.getStudentSex());
+            rows.createCell(5).setCellValue(e.getStudentPhone());
+            rowNum++;
+        };
+        ExcelUtils.returnExport(workbook,response,fileName);
     }
 }

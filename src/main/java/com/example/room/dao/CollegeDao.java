@@ -52,4 +52,11 @@ public interface CollegeDao {
      * @return
      */
     int update(CollegeInfo collegeInfo);
+
+    /**
+     * 根据名称获取学院信息
+     * @param nameList
+     * @return
+     */
+    List<CollegeInfo> getCollegeList(List<String> nameList);
 }

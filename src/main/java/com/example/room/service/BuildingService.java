@@ -3,6 +3,7 @@ package com.example.room.service;
 import com.example.room.entity.BuildingInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -41,4 +42,10 @@ public interface BuildingService {
      * @return
      */
     int deleteBuilding(BuildingInfo buildingInfo);
+    /**
+     * 导出宿舍楼信息
+     *
+     * @return
+     */
+    void exportBuilding(HttpServletResponse response);
 }

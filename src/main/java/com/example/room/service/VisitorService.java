@@ -3,6 +3,7 @@ package com.example.room.service;
 import com.example.room.entity.VisitorInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -33,4 +34,10 @@ public interface VisitorService {
      * @return
      */
     PageInfo<VisitorInfo> findVisitorForPage(VisitorInfo visitorInfo);
+    /**
+     * 导出外来人员访问信息
+     *
+     * @return
+     */
+    void exportVisitor(HttpServletResponse response);
 }

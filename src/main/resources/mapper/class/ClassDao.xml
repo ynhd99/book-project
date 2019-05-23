@@ -135,4 +135,14 @@
             and class_code = #{classCode}
         </where>
     </select>
+    <!--通名称查询班级数据-->
+    <select id="getClassByName" resultType="com.example.room.entity.ClassInfo">
+        SELECT
+        id,class_name,class_code,status
+        FROM class
+        WHERE delete_flag = 0 and class_name in
+        <foreach collection="list" close=")" index="index" item="item" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

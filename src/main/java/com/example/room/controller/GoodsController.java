@@ -6,10 +6,10 @@ import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.GoodsService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author yangna
@@ -76,5 +76,13 @@ public class GoodsController {
             throw new SaleBusinessException("删除失败");
         }
         return MessageBody.getMessageBody(true, "删除成功");
+    }
+    /**
+     * 导出物品信息表
+     */
+    @RequestMapping(value = "/exportGoods", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        goodsService.exportGoods( response);
     }
 }

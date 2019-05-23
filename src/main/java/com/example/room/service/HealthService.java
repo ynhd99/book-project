@@ -3,6 +3,7 @@ package com.example.room.service;
 import com.example.room.entity.HealthInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -33,4 +34,10 @@ public interface HealthService {
      * @return
      */
     PageInfo<HealthInfo> findHealthForPage(HealthInfo healthInfo);
+    /**
+     * 导出卫生检查信息
+     *
+     * @return
+     */
+    void exportHealth(HttpServletResponse response);
 }

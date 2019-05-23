@@ -3,6 +3,7 @@ package com.example.room.service;
 import com.example.room.entity.StudentInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -41,5 +42,10 @@ public interface StudentService {
      * @return
      */
     int addStudent(StudentInfo studentInfo);
-
+    /**
+     * 导出学生信息
+     *
+     * @return
+     */
+    void exportStudent(HttpServletResponse response);
 }

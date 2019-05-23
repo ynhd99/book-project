@@ -9,18 +9,23 @@ import com.example.room.dao.RoomDetailDao;
 import com.example.room.dao.StudentDao;
 import com.example.room.entity.RoomDetailInfo;
 import com.example.room.entity.RoomEntity;
+import com.example.room.entity.StudentInfo;
 import com.example.room.service.RoomService;
 import com.example.room.utils.UUIDUtils;
 import com.example.room.utils.common.AirUtils;
+import com.example.room.utils.common.ExcelUtils;
 import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.crypto.Data;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -117,13 +122,13 @@ public class RoomServiceImpl implements RoomService {
         //封装参数
         roomEntity.setUpdateTime(new Date());
         roomEntity.setCreateUser(userController.getUser());
-        if (roomEntity.getStatus() == 1) {
+        if (AirUtils.hv(roomEntity.getStatus()) && roomEntity.getStatus() == 1) {
             List<RoomDetailInfo> roomDetailInfos = roomDetailDao.getDetailById(roomEntity.getId());
             List<String> detailList = roomDetailInfos.stream().map(e -> e.getId()).collect(Collectors.toList());
             List<String> studentList = roomDetailInfos.stream().map(e -> e.getStudentId()).collect(Collectors.toList());
             if (AirUtils.hv(detailList) && AirUtils.hv(studentList)) {
                 studentDao.deleteSettleFlags(studentList);
-                roomDetailDao.deleteRoomDetails(detailList);
+                roomDetailDao.deleteRoomDetails(detailList,new Date());
             }
         }
         return roomDao.updateRoom(roomEntity);
@@ -138,6 +143,63 @@ public class RoomServiceImpl implements RoomService {
     @Override
     public List<RoomEntity> findRoomList(RoomEntity roomEntity) {
         return roomDao.findRoomList(roomEntity);
+    }
+
+    /**
+     * 导出宿舍档案
+     * @param response
+     */
+    @Override
+    public void exportRoom(HttpServletResponse response) {
+        RoomEntity roomEntity = new RoomEntity();
+        RoomDetailInfo roomDetailInfo = new RoomDetailInfo();
+        //获取到学生列表
+        List<RoomEntity> roomEntities = roomDao.findDataForPage(roomEntity);
+        List<RoomDetailInfo> roomDetailInfos = roomDetailDao.getRoomDetailForPage(roomDetailInfo);
+        String header1[] = {"宿舍号","类别","楼号","容纳人数","现有人数","状态"};
+        String header2[] = {"宿舍号","学号","学生姓名","学院","班级","性别","手机号","入住日期","退宿日期","床号"};
+        String title1 = "宿舍档案表";
+        String title2 = "住宿情况表";
+        String fileName = "宿舍分配情况表";
+        int rowNum1 = 1;
+        int rowNum2 = 1;
+        HSSFWorkbook workbook = ExcelUtils.exportExcel(title1,header1);
+        HSSFSheet sheet1 = workbook.getSheet(title1);
+        HSSFSheet sheet2 = workbook.createSheet(title2);
+        HSSFRow row = sheet2.createRow(0);
+        //设置表头数据
+        for (int i = 0;i<header2.length;i++){
+            HSSFCell cell = row.createCell(i);
+            HSSFRichTextString text = new HSSFRichTextString(header2[i]);
+            cell.setCellValue(text);
+        }
+        for (RoomEntity e : roomEntities) {
+            HSSFRow rows = sheet1.createRow(rowNum1);
+            rows.createCell(0).setCellValue(e.getRoomCode());
+            rows.createCell(1).setCellValue(e.getCateParentName()+"-"+e.getCateName());
+            rows.createCell(2).setCellValue(e.getBuildingName());
+            rows.createCell(3).setCellValue(e.getRoomCount());
+            rows.createCell(4).setCellValue(e.getCurrentCount() == null?0:e.getCurrentCount());
+            rows.createCell(5).setCellValue(e.getStatus() == 0?"启用":"停用");
+            rowNum1++;
+        };
+        for (RoomDetailInfo e : roomDetailInfos) {
+            HSSFRow rows = sheet2.createRow(rowNum2);
+            rows.createCell(0).setCellValue(e.getRoomCode());
+            rows.createCell(1).setCellValue(e.getStudentCode());
+            rows.createCell(2).setCellValue(e.getStudentName());
+            rows.createCell(3).setCellValue(e.getCollegeName());
+            rows.createCell(4).setCellValue(e.getClassName());
+            rows.createCell(5).setCellValue(e.getStudentSex());
+            rows.createCell(6).setCellValue(e.getStudentPhone());
+            rows.createCell(7).setCellValue(e.getCheckDate());
+            if(AirUtils.hv(e.getDeleteDate())) {
+                rows.createCell(8).setCellValue(e.getDeleteDate());
+            }
+            rows.createCell(9).setCellValue(e.getBedCount());
+            rowNum2++;
+        };
+        ExcelUtils.returnExport(workbook,response,fileName);
     }
 
     /**

@@ -3,6 +3,8 @@ package com.example.room.service;
 import com.example.room.entity.RepairInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
+
 
 /**
  * @author yangna
@@ -32,4 +34,10 @@ public interface RepairService {
      * @return
      */
     PageInfo<RepairInfo> findRepairForPage(RepairInfo repairInfo);
+    /**
+     * 导出维修情况信息
+     *
+     * @return
+     */
+    void exportRepair(HttpServletResponse response);
 }

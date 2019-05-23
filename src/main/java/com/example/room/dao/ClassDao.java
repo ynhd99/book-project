@@ -61,4 +61,11 @@ public interface ClassDao {
 	 * @return 执行条数
 	 */
 	ClassInfo getClassByCode(String classCode);
+
+	/**
+	 * 根据名称获取班级数据
+	 * @param nameList
+	 * @return
+	 */
+	List<ClassInfo> getClassByName(List<String> nameList);
 }

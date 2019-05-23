@@ -31,7 +31,7 @@
     <!--删除住宿人员-->
     <update id="deleteRoomDetail">
         update room_detail
-        set delete_flag = 1
+        set delete_flag = 1,update_time = #{updateTime},delete_date = #{deleteDate}
         where id = #{id}
     </update>
     <!--查询详情-->
@@ -54,7 +54,7 @@
     <!--批量删除住宿人员-->
     <update id="deleteRoomDetails">
         update room_detail
-        set delete_flag = 1
+        set delete_flag = 1,update_time = #{date},delete_date = #{date}
         <where>
             id in
             <foreach collection="list" separator="," open="(" close=")" item="item">
@@ -71,8 +71,9 @@
     <!--查询详情-->
     <select id="getRoomDetailForPage" resultType="com.example.room.entity.RoomDetailInfo">
         select rd.id,r.room_code roomCode,b.building_code buildingCode,s.student_name studentName,c.college_name
-        collegeName,cs.class_name className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date checkDate,s.student_code
-        studentCode,rd.bed_count bedCount
+        collegeName,cs.class_name className,s.student_sex studentSex,s.student_phone studentPhone,rd.check_date
+        checkDate,s.student_code
+        studentCode,rd.bed_count bedCount,rd.delete_flag deleteFlag,rd.delete_date deleteDate
         from room_detail rd
         inner join room r on rd.room_id = r.id
         inner join building b on r.building_id = b.id
@@ -80,9 +81,8 @@
         inner join college c on s.college_id = c.id
         inner join class cs on s.class_id = cs.id
         <where>
-            rd.delete_flag = 0
             <if test="null != buildingId and '' != buildingId">
-                and b.id = #{buildingId}
+                b.id = #{buildingId}
             </if>
             <if test="null != roomId and '' != roomId">
                 and r.id = #{roomId}
@@ -103,5 +103,6 @@
                 and rd.check_date = #{checkDate}
             </if>
         </where>
+           order by r.room_code asc ,rd.check_date desc
     </select>
 </mapper>

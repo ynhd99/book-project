@@ -3,14 +3,21 @@ package com.example.room.service.impl;
 import com.example.room.controller.UserController;
 import com.example.room.dao.HealthDao;
 import com.example.room.entity.HealthInfo;
+import com.example.room.entity.VisitorInfo;
 import com.example.room.service.HealthService;
+import com.example.room.utils.common.ExcelUtils;
 import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
 
 /**
  * @author yangna
@@ -64,5 +71,31 @@ public class HealthServiceImpl implements HealthService {
         PageHelper.startPage(healthInfo.getPage(), healthInfo.getSize());
         PageInfo<HealthInfo> pageInfo = new PageInfo<>(healthDao.findHealthForPage(healthInfo));
         return pageInfo;
+    }
+
+    /**
+     * 导出卫生检查情况
+     * @param response
+     */
+    @Override
+    public void exportHealth(HttpServletResponse response) {
+        HealthInfo healthInfo = new HealthInfo();
+        //获取到学生列表
+        List<HealthInfo> healthInfos = healthDao.findHealthForPage(healthInfo);
+        String header[] = {"宿舍名称","检查日期","检查分数","备注"};
+        String title = "卫生检查信息表";
+        String fileName = "卫生检查信息表";
+        int rowNum = 1;
+        HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
+        HSSFSheet sheet = workbook.getSheet(title);
+        for (HealthInfo e : healthInfos) {
+            HSSFRow rows = sheet.createRow(rowNum);
+            rows.createCell(0).setCellValue(e.getRoomCode());
+            rows.createCell(1).setCellValue(e.getCheckDate());
+            rows.createCell(2).setCellValue(e.getCheckPoint().toString());
+            rows.createCell(3).setCellValue(e.getRemark());
+            rowNum++;
+        };
+        ExcelUtils.returnExport(workbook,response,fileName);
     }
 }

@@ -3,6 +3,7 @@ package com.example.room.service;
 import com.example.room.entity.GoodsInfo;
 import com.github.pagehelper.PageInfo;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -41,5 +42,11 @@ public interface GoodsService {
      * @return
      */
     int deleteGoods(GoodsInfo goodsInfo);
+    /**
+     * 导出物品信息
+     *
+     * @return
+     */
+    void exportGoods(HttpServletResponse response);
 
 }

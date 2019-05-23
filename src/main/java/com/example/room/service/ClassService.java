@@ -2,6 +2,8 @@ package com.example.room.service;
 
 import com.example.room.entity.ClassInfo;
 import com.github.pagehelper.PageInfo;
+
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 
@@ -50,4 +52,10 @@ public interface ClassService {
 	 * @return 是否成功
 	 */
 	public boolean deleteClassById(ClassInfo classInfo);
+	/**
+	 * 导出班级信息
+	 *
+	 * @return
+	 */
+	void exportClass(HttpServletResponse response);
 }

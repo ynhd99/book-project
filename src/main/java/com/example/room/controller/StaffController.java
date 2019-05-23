@@ -5,10 +5,10 @@ import com.example.room.entity.StaffInfo;
 import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author yangna
@@ -71,5 +71,13 @@ public class StaffController {
             throw new SaleBusinessException("删除失败");
         }
         return MessageBody.getMessageBody(true, "删除成功");
+    }
+    /**
+     * 导出宿管员信息
+     */
+    @RequestMapping(value = "/exportStaff", method = RequestMethod.GET)
+    @ResponseBody
+    public void export(HttpServletRequest request, HttpServletResponse response){
+        staffService.exportStaff( response);
     }
 }

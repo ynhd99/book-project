@@ -4,6 +4,7 @@ import com.example.room.entity.common.Base;
 import lombok.Data;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author yangna
@@ -63,4 +64,22 @@ public class StudentInfo extends Base {
      * 删除学生列表
      */
     private List<String> deleteStudentList;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        StudentInfo that = (StudentInfo) o;
+        return Objects.equals(studentCode, that.studentCode);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = 17;
+        result = 31 * result + (studentCode == null ? 0 : studentCode.hashCode());
+        return result;
+    }
 }
