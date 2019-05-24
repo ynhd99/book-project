@@ -18,4 +18,7 @@ public class ExcelBaseData{
    private String collegeName;
    private String className;
    private int row;
+   private String role;
+   private String cateName;
+   private String builidngName;
 }

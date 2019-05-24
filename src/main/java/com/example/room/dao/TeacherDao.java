@@ -70,4 +70,18 @@ public interface TeacherDao {
      * 批量删除用户表
      */
     int batchDeleteUser(List<String> ids);
+
+    /**
+     * 根据编码批量查询
+     * @param codeList
+     * @return
+     */
+    List<TeacherInfo> getDataByCodes(List<String> codeList);
+
+    /**
+     * 批量新增老师信息
+     * @param teacherInfos
+     * @return
+     */
+    int batchAddTeacher(List<TeacherInfo> teacherInfos);
 }

@@ -1,5 +1,6 @@
 package com.example.room.dao;
 
+import com.example.room.entity.ClassInfo;
 import com.example.room.entity.RoomCategory;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
@@ -63,4 +64,10 @@ public interface RoomCateDao {
      * @return
      */
     int updateRoomCate(RoomCategory roomCategory);
+    /**
+     * 根据名称获取班级数据
+     * @param nameList
+     * @return
+     */
+    List<RoomCategory> getCateByName(List<String> nameList);
 }

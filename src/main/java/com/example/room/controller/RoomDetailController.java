@@ -1,15 +1,15 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.RoomDetailInfo;
 import com.example.room.entity.RoomEntity;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.RoomDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @author yangna
@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class RoomDetailController {
     @Autowired
     private RoomDetailService roomDetailService;
+    @Autowired
+    private ExcelBaseService excelBaseService;
 
     /**
      * 新增访问者信息
@@ -60,5 +62,13 @@ public class RoomDetailController {
     @PostMapping("findRoomDetailForPage")
     public MessageBody findDataForPage(@RequestBody RoomDetailInfo roomDetailInfo) {
         return MessageBody.getMessageBody(true, roomDetailService.getRoomDetailForPage(roomDetailInfo));
+    }
+    /**
+     * 导入宿舍详情信息
+     * @param file
+     */
+    @PostMapping("importRoomDetail")
+    public ExcelImportMessage importRoomDetail(@RequestParam("file") MultipartFile file){
+        return excelBaseService.importRoomDetail(file, RoomDetailInfo.class);
     }
 }

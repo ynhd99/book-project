@@ -45,6 +45,10 @@ public class StudentInfo extends Base {
      */
     private String roleId;
     /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
      * 学院名称
      */
     private String collegeName;

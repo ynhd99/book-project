@@ -1,16 +1,23 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.AbstractBaseExcelImportTask;
+import com.example.room.common.excel.ExcelImportMessage;
+import com.example.room.common.excel.ExcelMetaData;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.CollegeInfo;
+import com.example.room.entity.StaffInfo;
 import com.example.room.entity.dto.MessageBody;
 import com.example.room.service.CollegeService;
+import com.example.room.service.ExcelBaseService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Map;
 
 /**
  * @author yangna
@@ -21,7 +28,8 @@ import javax.servlet.http.HttpServletResponse;
 public class CollegeController {
     @Autowired
     private CollegeService collegeService;
-
+    @Autowired
+    private ExcelBaseService excelBaseService;
     /**
      * 新增学院信息
      *
@@ -100,5 +108,13 @@ public class CollegeController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         collegeService.exportCollege( response);
+    }
+    /**
+     * 导入学院信息
+     * @param file
+     */
+    @PostMapping("importCollege")
+    public ExcelImportMessage importCollege(@RequestParam("file") MultipartFile file){
+  return excelBaseService.importCollege(file,CollegeInfo.class);
     }
 }

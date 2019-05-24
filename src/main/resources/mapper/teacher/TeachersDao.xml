@@ -89,6 +89,15 @@
         from teacher
         where delete_flag = 0 and teacher_code = #{code}
     </select>
+    <!--根据编码获取学生信息-->
+    <select id="getDataByCodes" resultType="com.example.room.entity.TeacherInfo">
+        select id,teacher_code teacherCode,teacher_name teacherName
+        from teacher
+        where delete_flag = 0 and teacher_code in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
     <!--根据id获取宿管员信息-->
     <select id="getDataById" resultType="string">
         select teacher_code
@@ -118,4 +127,33 @@
         </foreach>
     </where>
     </update>
+    <!--新增宿管员信息-->
+    <insert id="batchAddTeacher" parameterType="com.example.room.entity.TeacherInfo">
+        insert into teacher
+        (
+        id,
+        teacher_name,
+        teacher_code,
+        teacher_phone,
+        teacher_sex,
+        college_id,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.teacherName},
+        #{item.teacherCode},
+        #{item.teacherPhone},
+        #{item.teacherSex},
+        #{item.collegeId},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>

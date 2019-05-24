@@ -28,6 +28,10 @@ public class StaffInfo extends Base {
      */
     private String roleId;
     /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
      * 宿管员性别
      */
     private String staffSex;

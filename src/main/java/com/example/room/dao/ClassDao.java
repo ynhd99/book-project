@@ -1,5 +1,7 @@
 package com.example.room.dao;
 import java.util.List;
+
+import com.example.room.entity.TeacherInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import com.example.room.entity.ClassInfo;
@@ -68,4 +70,17 @@ public interface ClassDao {
 	 * @return
 	 */
 	List<ClassInfo> getClassByName(List<String> nameList);
+	/**
+	 * 根据编码批量查询
+	 * @param codeList
+	 * @return
+	 */
+	List<ClassInfo> getDataByCodes(List<String> codeList);
+
+	/**
+	 * 批量新增学院信息
+	 * @param classInfos
+	 * @return
+	 */
+	int batchAddClass(List<ClassInfo> classInfos);
 }

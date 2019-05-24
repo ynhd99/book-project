@@ -2,12 +2,17 @@ package com.example.room.controller;
 
 import java.util.List;
 
+import com.example.room.common.excel.AbstractBaseExcelImportTask;
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.response.MessageBody;
+import com.example.room.entity.CollegeInfo;
+import com.example.room.service.ExcelBaseService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import com.example.room.entity.ClassInfo;
 import com.example.room.service.ClassService;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +29,8 @@ public class ClassController {
 
     @Autowired
     private ClassService classService;
-
+    @Autowired
+    private ExcelBaseService excelBaseService;
     /**
      * 通过ID查询单条班级管理数据
      *
@@ -109,5 +115,13 @@ public class ClassController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         classService.exportClass( response);
+    }
+    /**
+     * 导入班级信息
+     * @param file
+     */
+    @PostMapping("importClass")
+    public ExcelImportMessage importClass(@RequestParam("file") MultipartFile file){
+     return excelBaseService.importClass(file,ClassInfo.class);
     }
 }

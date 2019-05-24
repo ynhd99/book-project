@@ -1,6 +1,7 @@
 package com.example.room.dao;
 
 import com.example.room.entity.BuildingInfo;
+import com.example.room.entity.ClassInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -47,4 +48,23 @@ public interface BuildingDao {
      * @return
      */
     BuildingInfo getDataByCode(String code);
+    /**
+     * 根据编码批量查询
+     * @param codeList
+     * @return
+     */
+    List<BuildingInfo> getDataByCodes(List<String> codeList);
+
+    /**
+     * 批量新增学院信息
+     * @param buildingInfos
+     * @return
+     */
+    int batchAddBuilding(List<BuildingInfo> buildingInfos);
+    /**
+     * 根据名称获取班级数据
+     * @param nameList
+     * @return
+     */
+    List<BuildingInfo> getBuildingByName(List<String> nameList);
 }

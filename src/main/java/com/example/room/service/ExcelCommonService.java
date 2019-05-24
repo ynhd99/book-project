@@ -1,8 +1,7 @@
 package com.example.room.service;
 
 import com.example.room.common.excel.data.ExcelBaseData;
-import com.example.room.entity.ClassInfo;
-import com.example.room.entity.CollegeInfo;
+import com.example.room.entity.*;
 
 import java.util.List;
 import java.util.Map;
@@ -21,4 +20,22 @@ public interface ExcelCommonService {
      * @param errorList
      */
     public Map<String, ClassInfo> checkClass(List<ExcelBaseData> baseDataList, List<String> errorList);
+    /**
+     * 校验角色是否存在
+     * @param baseDataList
+     * @param errorList
+     */
+    public Map<String, RoleInfo> checkRole(List<ExcelBaseData> baseDataList, List<String> errorList);
+    /**
+     * 校验类别是否存在
+     * @param baseDataList
+     * @param errorList
+     */
+    public Map<String, RoomCategory> checkRoomCate(List<ExcelBaseData> baseDataList, List<String> errorList);
+    /**
+     * 校验楼号是否存在
+     * @param baseDataList
+     * @param errorList
+     */
+    public Map<String, BuildingInfo> checkBuilding(List<ExcelBaseData> baseDataList, List<String> errorList);
 }

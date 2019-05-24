@@ -135,14 +135,49 @@
             and class_code = #{classCode}
         </where>
     </select>
-    <!--通名称查询班级数据-->
-    <select id="getClassByName" resultType="com.example.room.entity.ClassInfo">
-        SELECT
-        id,class_name,class_code,status
-        FROM class
-        WHERE delete_flag = 0 and class_name in
-        <foreach collection="list" close=")" index="index" item="item" open="(" separator=",">
+    <!--根据编码获取学生信息-->
+    <select id="getDataByCodes" resultType="com.example.room.entity.ClassInfo">
+        select id,class_code classCode,class_name className
+        from class
+        where delete_flag = 0 and class_code in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
             #{item}
         </foreach>
     </select>
+    <!--通名称查询班级数据-->
+    <select id="getClassByName" resultType="com.example.room.entity.ClassInfo">
+        SELECT
+        id,class_name className,class_code classCode,status
+        FROM class
+        WHERE delete_flag = 0 and class_name in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <!--新增班级管理数据-->
+    <insert id="batchAddClass" keyProperty="id" useGeneratedKeys="true">
+        INSERT INTO class
+        (
+        id,
+        college_id,
+        class_name,
+        class_code,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )
+        VALUES
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.collegeId},
+        #{item.className},
+        #{item.classCode},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>

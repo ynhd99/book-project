@@ -1,6 +1,7 @@
 package com.example.room.dao;
 
 import com.example.room.entity.StaffInfo;
+import com.example.room.entity.TeacherInfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Repository;
 
@@ -65,4 +66,17 @@ public interface StaffDao {
      * 批量删除用户表
      */
     int batchDeleteUser(List<String> ids);
+    /**
+     * 根据编码批量查询
+     * @param codeList
+     * @return
+     */
+    List<StaffInfo> getDataByCodes(List<String> codeList);
+
+    /**
+     * 批量新增老师信息
+     * @param staffInfos
+     * @return
+     */
+    int batchAddStaff(List<StaffInfo> staffInfos);
 }

@@ -83,4 +83,48 @@
         from building
         where delete_flag = 0 and building_code = #{code}
     </select>
+    <!--根据编码获取学生信息-->
+    <select id="getDataByCodes" resultType="com.example.room.entity.ClassInfo">
+        select id,building_code building_Code,building__name building_Name
+        from building
+        where delete_flag = 0 and building_code in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
+    <!--新增楼号信息-->
+    <insert id="batchAddBuilding" parameterType="com.example.room.entity.BuildingInfo">
+        insert into building
+        (
+        id,
+        building_name,
+        building_code,
+        staff_id,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{id},
+        #{buildingName},
+        #{buildingCode},
+        #{staffId},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        </foreach>
+    </insert>
+    <!--通名称查询宿舍类别数据-->
+    <select id="getBuildingByName" resultType="com.example.room.entity.BuildingInfo">
+        SELECT
+        id,building_name buildingName,building_code buildingCode,status
+        FROM building
+        WHERE delete_flag = 0 and building_name in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

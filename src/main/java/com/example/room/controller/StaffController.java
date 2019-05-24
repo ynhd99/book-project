@@ -1,11 +1,17 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.AbstractBaseExcelImportTask;
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.dao.StaffDao;
 import com.example.room.entity.StaffInfo;
+import com.example.room.entity.TeacherInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.StaffService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,7 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class StaffController {
     @Autowired
     private StaffService staffService;
-
+    @Autowired
+    private ExcelBaseService excelBaseService;
     /**
      * 分页查询宿管员信息
      *
@@ -79,5 +86,13 @@ public class StaffController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         staffService.exportStaff( response);
+    }
+    /**
+     * 导入宿管员信息
+     * @param file
+     */
+    @PostMapping("importStaff")
+    public ExcelImportMessage importStaff(@RequestParam("file") MultipartFile file){
+    return excelBaseService.importStaff(file, StaffInfo.class);
     }
 }

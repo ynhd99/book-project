@@ -83,4 +83,11 @@ public interface AuthorityDao {
      * @return
      */
     int deleteRole(RoleInfo roleInfo);
+
+    /**
+     * 根据名称获取角色id
+     * @param nameList
+     * @return
+     */
+    List<RoleInfo> getRoleByName(List<String> nameList);
 }

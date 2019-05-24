@@ -32,6 +32,10 @@ public class TeacherInfo extends Base {
      */
     private String roleId;
     /**
+     * 角色名称
+     */
+    private String roleName;
+    /**
      * 模糊查询字段
      */
     private String queryString;

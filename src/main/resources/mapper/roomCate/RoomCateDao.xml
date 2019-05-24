@@ -131,4 +131,14 @@
             and id = #{id}
         </where>
     </update>
+    <!--通名称查询宿舍类别数据-->
+    <select id="getCateByName" resultType="com.example.room.entity.RoomCategory">
+        SELECT
+        id,cate_name cateName,cate_code cateCode,status
+        FROM room_category
+        WHERE delete_flag = 0 and cate_name in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
 </mapper>

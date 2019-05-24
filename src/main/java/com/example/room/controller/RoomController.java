@@ -1,13 +1,17 @@
 package com.example.room.controller;
 
 import com.example.room.common.advice.validatorGroup.Delete;
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.RoomEntity;
+import com.example.room.entity.TeacherInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 public class RoomController {
     @Autowired
     private RoomService roomService;
+    @Autowired
+    private ExcelBaseService excelBaseService;
 
     /**
      * 新增宿舍档案
@@ -46,6 +52,7 @@ public class RoomController {
     public MessageBody findDataForPage(@RequestBody RoomEntity roomEntity) {
         return MessageBody.getMessageBody(true, roomService.findDataForPage(roomEntity));
     }
+
     /**
      * 查询宿舍档案
      *
@@ -83,12 +90,23 @@ public class RoomController {
         }
         return MessageBody.getMessageBody(true, "修改成功");
     }
+
     /**
      * 导出宿舍信息
      */
     @RequestMapping(value = "/exportRoom", method = RequestMethod.GET)
     @ResponseBody
-    public void export(HttpServletRequest request, HttpServletResponse response){
-        roomService.exportRoom( response);
+    public void export(HttpServletRequest request, HttpServletResponse response) {
+        roomService.exportRoom(response);
+    }
+
+    /**
+     * 导入宿舍信息
+     *
+     * @param file
+     */
+    @PostMapping("importRoom")
+    public ExcelImportMessage importRoom(@RequestParam("file") MultipartFile file) {
+        return excelBaseService.importRoom(file, RoomEntity.class);
     }
 }

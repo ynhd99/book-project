@@ -7,6 +7,7 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public abstract class AbstractBaseExcelImportTask {
             excelImportMessage.setUploadStatus(false);
             excelImportMessage.setCorrectList(null);
             //结果排序
-            POIUtil.ExcelResultSort(excelImportMessage);
+            //POIUtil.ExcelResultSort(excelImportMessage);
             return excelImportMessage;
         }
         excelImportMessage.setImportMsg(excelImportMessage.getCorrectList().size());

@@ -1,11 +1,16 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.AbstractBaseExcelImportTask;
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.entity.StudentInfo;
 import com.example.room.entity.TeacherInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +24,8 @@ import javax.servlet.http.HttpServletResponse;
 public class TeacherController {
     @Autowired
     private TeacherService teacherService;
+    @Autowired
+    private ExcelBaseService excelBaseService;
 
     /**
      * 分页查询宿管员信息
@@ -79,6 +86,14 @@ public class TeacherController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         teacherService.exportTeacher( response);
+    }
+    /**
+     * 导入老师信息
+     * @param file
+     */
+    @PostMapping("importTeacher")
+    public ExcelImportMessage importTeacher(@RequestParam("file") MultipartFile file){
+      return excelBaseService.importTeacher(file,TeacherInfo.class);
     }
 }
 

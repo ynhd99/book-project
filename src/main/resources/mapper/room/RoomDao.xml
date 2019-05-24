@@ -37,6 +37,15 @@
             and room_code = #{roomCode}
         </where>
     </select>
+    <!--根据编码获取学生信息-->
+    <select id="getDataByCodes" resultType="com.example.room.entity.RoomEntity">
+        select id,room_code roomCode
+        from room
+        where delete_flag = 0 and room_code in
+        <foreach collection="list" item="item" close=")" open="(" separator=",">
+            #{item}
+        </foreach>
+    </select>
     <!--分页查询宿舍信息-->
     <select id="findDataForPage" parameterType="com.example.room.entity.RoomEntity"
             resultType="com.example.room.entity.RoomEntity">
@@ -107,4 +116,31 @@
             </if>
         </where>
     </select>
+    <!--新增宿舍信息-->
+    <insert id="batchAddRoom" parameterType="com.example.room.entity.RoomEntity">
+        insert into room
+        (
+        id,
+        cate_id,
+        room_code,
+        building_id,
+        room_count,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.cateId},
+        #{item.roomCode},
+        #{item.buildingId},
+        #{item.roomCount},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>
