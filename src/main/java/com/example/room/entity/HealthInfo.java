@@ -3,7 +3,6 @@ package com.example.room.entity;
 import com.example.room.entity.common.Base;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import org.apache.poi.hpsf.Decimal;
 
 import java.math.BigDecimal;
 import java.util.Date;

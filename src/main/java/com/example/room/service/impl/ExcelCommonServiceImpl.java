@@ -122,9 +122,9 @@ public class ExcelCommonServiceImpl implements ExcelCommonService {
                 map.put(e.getCateName(),e);
             });
             baseDataList.forEach(item->{
-                if(!AirUtils.hv(map.get(item.getRole()))){
+                if(!AirUtils.hv(map.get(item.getCateName()))){
                     errorList.add("第"+item.getRow()+"行类别在系统中不存在");
-                }else if(map.get(item.getRole()).getStatus() == 1){
+                }else if(map.get(item.getCateName()).getStatus() == 1){
                     errorList.add("第"+item.getRow()+"行类别，已经停用");
                 }
             });
@@ -151,9 +151,9 @@ public class ExcelCommonServiceImpl implements ExcelCommonService {
                 map.put(e.getBuildingName(),e);
             });
             baseDataList.forEach(item->{
-                if(!AirUtils.hv(map.get(item.getRole()))){
+                if(!AirUtils.hv(map.get(item.getBuilidngName()))){
                     errorList.add("第"+item.getRow()+"行楼号在系统中不存在");
-                }else if(map.get(item.getRole()).getStatus() == 1){
+                }else if(map.get(item.getBuilidngName()).getStatus() == 1){
                     errorList.add("第"+item.getRow()+"行楼号，已经停用");
                 }
             });

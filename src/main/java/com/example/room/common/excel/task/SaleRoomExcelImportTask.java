@@ -56,9 +56,9 @@ public class SaleRoomExcelImportTask extends AbstractBaseExcelImportTask {
         List<ExcelBaseData> buildingInfos = new ArrayList<>();
         correctData.forEach(e->{
             ExcelBaseData data = new ExcelBaseData();
-            data.setCollegeName(e.getCateName());
+            data.setCateName(e.getCateName());
             data.setRow(e.getRow());
-            data.setRole(e.getBuildingName());
+            data.setBuilidngName(e.getBuildingName());
             categoryList.add(data);
             buildingInfos.add(data);
         });
