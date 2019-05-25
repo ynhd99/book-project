@@ -125,6 +125,7 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
             e.setUpdateUser(userController.getUser());
             //同时将用户名，账号，角色写入user库
             UserInfo userInfo = new UserInfo();
+            userInfo.setId(UUIDGenerator.getUUID());
             userInfo.setFullName(e.getTeacherName());
             userInfo.setUserName(e.getTeacherCode());
             userInfo.setUserPass("SJ123456");

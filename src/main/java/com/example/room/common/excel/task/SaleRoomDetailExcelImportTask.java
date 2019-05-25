@@ -13,7 +13,9 @@ import com.example.room.dao.StudentDao;
 import com.example.room.entity.*;
 import com.example.room.service.ExcelCommonService;
 import com.example.room.utils.common.AirUtils;
+import com.example.room.utils.common.DateUtils;
 import com.example.room.utils.common.UUIDGenerator;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,7 @@ public class SaleRoomDetailExcelImportTask extends AbstractBaseExcelImportTask {
         Map<Integer, ExcelMetaData> map = new LinkedHashMap<>();
         map.put(0, new ExcelMetaData("宿舍号", "roomCode", true, ExcelConstants.BASE_RGE.ROOMCODE, false));
         map.put(1, new ExcelMetaData("学号", "studentCode", true, ExcelConstants.BASE_RGE.CODE));
-        map.put(2, new ExcelMetaData("入住日期", "checkDate", true, ExcelConstants.BASE_RGE.DATE));
+        map.put(2, new ExcelMetaData("入住日期", "date", true, ExcelConstants.BASE_RGE.DATE));
         map.put(3, new ExcelMetaData("床号", "bedCount", true, ExcelConstants.BASE_RGE.NUMBER));
         return map;
     }
@@ -94,6 +96,8 @@ public class SaleRoomDetailExcelImportTask extends AbstractBaseExcelImportTask {
                         errorList.add("第" + e.getRow() + "行" + "第" + col + "列“学号”在系统中不存在");
                     }
                 });
+            }else{
+                errorList.add("学号在系统中都不存在");
             }
         }
         return custormMap;
@@ -115,10 +119,12 @@ public class SaleRoomDetailExcelImportTask extends AbstractBaseExcelImportTask {
                     custormMap.put(e.getRoomCode(), e);
                 });
                 roomEntityList.forEach(e -> {
-                    if (AirUtils.hv(custormMap.get(e.getRoomCode()))) {
+                    if (!AirUtils.hv(custormMap.get(e.getRoomCode()))) {
                         errorList.add("第" + e.getRow() + "行" + "第" + col + "列“宿舍号”在系统中不存在");
                     }
                 });
+            }else{
+                errorList.add("宿舍号在系统中都不存在");
             }
         }
         return custormMap;
@@ -135,6 +141,7 @@ public class SaleRoomDetailExcelImportTask extends AbstractBaseExcelImportTask {
             e.setId(UUIDGenerator.getUUID());
             e.setRoomId(roleInfoMap.get(e.getRoomCode()).getId());
             e.setStudentId(studentInfoMap.get(e.getStudentCode()).getId());
+            e.setCheckDate(DateUtils.string2Date(e.getDate(),DateUtils.FORMAT3));
             e.setCreateTime(new Date());
             e.setCreateUser(userController.getUser());
             e.setUpdateTime(new Date());

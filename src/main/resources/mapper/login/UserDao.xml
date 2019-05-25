@@ -178,15 +178,15 @@
         )values
         <foreach collection="list" item="item" index="index"
                  open="(" separator="),(" close=")">
-        #{id},
-        #{fullName},
-        #{userName},
-        #{userPass},
-        #{roleId},
-        #{createTime},
-        #{createUser},
-        #{updateTime},
-        #{updateUser}
+        #{item.id},
+        #{item.fullName},
+        #{item.userName},
+        #{item.userPass},
+        #{item.roleId},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
         </foreach>
     </insert>
 </mapper>

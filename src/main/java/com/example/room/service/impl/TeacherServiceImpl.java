@@ -120,6 +120,7 @@ public class TeacherServiceImpl implements TeacherService {
         teacherInfo.setUpdateUser(userController.getUser());
         //同时将用户名，账号，角色写入user库
         UserInfo userInfo = new UserInfo();
+        userInfo.setId(UUIDGenerator.getUUID());
         userInfo.setFullName(teacherInfo.getTeacherName());
         userInfo.setUserName(teacherInfo.getTeacherCode());
         userInfo.setUserPass("SJ123456");
