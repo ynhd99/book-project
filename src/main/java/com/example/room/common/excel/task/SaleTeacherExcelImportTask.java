@@ -9,6 +9,7 @@ import com.example.room.common.excel.util.POIUtil;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.dao.TeacherDao;
+import com.example.room.dao.UserDao;
 import com.example.room.entity.*;
 import com.example.room.service.ExcelCommonService;
 import com.example.room.utils.common.AirUtils;
@@ -29,6 +30,8 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
     private ExcelCommonService excelCommonService;
     @Autowired
     private UserController userController;
+    @Autowired
+    private UserDao userDao;
     @Override
     public Map<Integer, ExcelMetaData> initMetaData() {
         Map<Integer, ExcelMetaData> map = new LinkedHashMap<>();
@@ -73,9 +76,9 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
             return;
         }
         //如果没有错误信息则及进行封装入库
-        buildStudentData(correctData,collegeInfoMap,roleInfoMap);
+        List<UserInfo> userInfoList = buildStudentData(correctData,collegeInfoMap,roleInfoMap);
         //进行批次入库
-        insertTODB(correctData);
+        insertTODB(correctData,userInfoList);
     }
 
     /**
@@ -109,8 +112,9 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
      * @param studentInfos
      * @param collegeInfoMap
      */
-    public void buildStudentData(List<TeacherInfo> studentInfos, Map<String,CollegeInfo> collegeInfoMap,Map<String,RoleInfo> roleInfoMap) {
+    public  List<UserInfo> buildStudentData(List<TeacherInfo> studentInfos, Map<String,CollegeInfo> collegeInfoMap,Map<String,RoleInfo> roleInfoMap) {
         //封装客户基础信息
+        List<UserInfo> userInfoList = new ArrayList<>();
         studentInfos.forEach(e->{
             e.setId(UUIDGenerator.getUUID());
             e.setCollegeId(collegeInfoMap.get(e.getCollegeName()).getId());
@@ -119,7 +123,17 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
             e.setCreateUser(userController.getUser());
             e.setUpdateTime(new Date());
             e.setUpdateUser(userController.getUser());
+            //同时将用户名，账号，角色写入user库
+            UserInfo userInfo = new UserInfo();
+            userInfo.setFullName(e.getTeacherName());
+            userInfo.setUserName(e.getTeacherCode());
+            userInfo.setUserPass("SJ123456");
+            userInfo.setRoleId(e.getRoleId());
+            userInfo.setCreateUser(userController.getUser());
+            userInfo.setUpdateUser(userController.getUser());
+            userInfoList.add(userInfo);
         });
+        return userInfoList;
     }
 
     /**
@@ -127,7 +141,7 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
      *
      * @param studentInfos
      */
-    public void insertTODB(List<TeacherInfo> studentInfos) {
+    public void insertTODB(List<TeacherInfo> studentInfos, List<UserInfo> userInfoList) {
         int batch = studentInfos.size() / ExcelConstants.BATHC_SIZE;
         int lastIndex;
         //客户档案入库
@@ -139,6 +153,21 @@ public class SaleTeacherExcelImportTask extends AbstractBaseExcelImportTask {
                 int size = teacherDao.batchAddTeacher(subList);
                 if (subList.size() != size) {
                     throw new SaleBusinessException("老师信息入库失败");
+                }
+            }
+        }
+
+        int userBatch = studentInfos.size() / ExcelConstants.BATHC_SIZE;
+        int lastIndex1;
+        //客户档案入库
+        for (int i = 0; i <= userBatch; i++) {
+            lastIndex1 = (i == userBatch) ? userInfoList.size() : ExcelConstants.BATHC_SIZE * (i + 1);
+            //判断是否有数据
+            List<UserInfo> subList = userInfoList.subList(ExcelConstants.BATHC_SIZE * i, lastIndex1);
+            if (AirUtils.hv(subList)) {
+                int size = userDao.batchAddUser(subList);
+                if (subList.size() != size) {
+                    throw new SaleBusinessException("用户入库失败");
                 }
             }
         }

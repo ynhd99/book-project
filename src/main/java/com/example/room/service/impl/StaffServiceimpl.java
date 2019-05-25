@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -140,13 +141,14 @@ public class StaffServiceimpl implements StaffService {
         String fileName = "宿管员信息表";
         int rowNum = 1;
         HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
+        CellStyle cellStyle =ExcelUtils.getCellStyle(workbook);
         HSSFSheet sheet = workbook.getSheet(title);
         for (StaffInfo e : staffInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            rows.createCell(0).setCellValue(e.getStaffCode());
-            rows.createCell(1).setCellValue(e.getStaffName());
-            rows.createCell(2).setCellValue(e.getStaffSex());
-            rows.createCell(3).setCellValue(e.getStaffPhone());
+            ExcelUtils.addCell(rows, 0,e.getStaffCode(), cellStyle);
+            ExcelUtils.addCell(rows, 1,e.getStaffName(), cellStyle);
+            ExcelUtils.addCell(rows, 2,e.getStaffSex(), cellStyle);
+            ExcelUtils.addCell(rows, 3,e.getStaffPhone(), cellStyle);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

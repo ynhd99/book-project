@@ -162,4 +162,31 @@
         from user
         where delete_flag = 0 and user_name = #{code}
     </select>
+    <!--用户注册账号信息-->
+    <insert id="batchAddUser" parameterType="com.example.room.entity.UserInfo">
+        insert into user
+        (
+         id,
+         full_name,
+         user_name,
+         user_pass,
+         role_id,
+         create_time,
+         create_user,
+         update_time,
+         update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{id},
+        #{fullName},
+        #{userName},
+        #{userPass},
+        #{roleId},
+        #{createTime},
+        #{createUser},
+        #{updateTime},
+        #{updateUser}
+        </foreach>
+    </insert>
 </mapper>

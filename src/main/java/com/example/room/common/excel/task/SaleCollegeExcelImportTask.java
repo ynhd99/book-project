@@ -76,7 +76,7 @@ public class SaleCollegeExcelImportTask extends AbstractBaseExcelImportTask {
                 });
                 excelTeacherData.forEach(e -> {
                     if (AirUtils.hv(custormMap.get(e.getCollegeCode()))) {
-                        errorList.add("第" + e.getRow() + "行" + "第" + col + "列“学号”与系统已存在的编号重复");
+                        errorList.add("第" + e.getRow() + "行" + "第" + col + "列“学院编码”与系统已存在的编号重复");
                     }
                 });
             }

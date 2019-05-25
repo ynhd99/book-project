@@ -35,5 +35,7 @@ public interface UserDao {
     StaffInfoDto getStaffInfo(String userName);
 
     UserInfo getDataByCode(String code);
+
+    int batchAddUser(List<UserInfo> userInfos);
 }
 

@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -118,11 +119,12 @@ public class CollegeServiceImpl implements CollegeService {
         int rowNum = 1;
         HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
         HSSFSheet sheet = workbook.getSheet(title);
+        CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (CollegeInfo e : collegeInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            rows.createCell(0).setCellValue(e.getCollegeCode());
-            rows.createCell(1).setCellValue(e.getCollegeName());
-            rows.createCell(2).setCellValue(e.getStatus() == 0?"启用":"停用");
+            ExcelUtils.addCell(rows, 0,e.getCollegeCode(), cellStyle);
+            ExcelUtils.addCell(rows, 1,e.getCollegeName(), cellStyle);
+            ExcelUtils.addCell(rows, 2,e.getStatus() == 0?"启用":"停用", cellStyle);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

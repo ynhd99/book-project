@@ -12,6 +12,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -89,15 +90,16 @@ public class VisitorServiceImpl implements VisitorService {
         int rowNum = 1;
         HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
         HSSFSheet sheet = workbook.getSheet(title);
+        CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (VisitorInfo e : visitorInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            rows.createCell(0).setCellValue(e.getVisitorName());
-            rows.createCell(1).setCellValue(e.getIdentityCode());
-            rows.createCell(2).setCellValue(e.getPhoneNumber());
-            rows.createCell(3).setCellValue(e.getReceptName());
-            rows.createCell(4).setCellValue(e.getStartTime());
-            rows.createCell(5).setCellValue(e.getEndTime());
-            rows.createCell(6).setCellValue(e.getRemark());
+            ExcelUtils.addCell(rows, 0,e.getVisitorName(), cellStyle);
+            ExcelUtils.addCell(rows, 1,e.getIdentityCode(), cellStyle);
+            ExcelUtils.addCell(rows, 2,e.getPhoneNumber(), cellStyle);
+            ExcelUtils.addCell(rows, 3,e.getReceptName(), cellStyle);
+            ExcelUtils.addCell(rows, 4,e.getStartTime(), cellStyle);
+            ExcelUtils.addCell(rows, 5,e.getEndTime(), cellStyle);
+            ExcelUtils.addCell(rows, 6,e.getRemark(), cellStyle);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

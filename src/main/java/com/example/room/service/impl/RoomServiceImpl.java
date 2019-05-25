@@ -18,6 +18,7 @@ import com.example.room.utils.common.UUIDGenerator;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.poi.hssf.usermodel.*;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,6 +168,7 @@ public class RoomServiceImpl implements RoomService {
         HSSFSheet sheet1 = workbook.getSheet(title1);
         HSSFSheet sheet2 = workbook.createSheet(title2);
         HSSFRow row = sheet2.createRow(0);
+        CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         //设置表头数据
         for (int i = 0;i<header2.length;i++){
             HSSFCell cell = row.createCell(i);
@@ -175,28 +177,28 @@ public class RoomServiceImpl implements RoomService {
         }
         for (RoomEntity e : roomEntities) {
             HSSFRow rows = sheet1.createRow(rowNum1);
-            rows.createCell(0).setCellValue(e.getRoomCode());
-            rows.createCell(1).setCellValue(e.getCateParentName()+"-"+e.getCateName());
-            rows.createCell(2).setCellValue(e.getBuildingName());
-            rows.createCell(3).setCellValue(e.getRoomCount());
-            rows.createCell(4).setCellValue(e.getCurrentCount() == null?0:e.getCurrentCount());
-            rows.createCell(5).setCellValue(e.getStatus() == 0?"启用":"停用");
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
+            ExcelUtils.addCell(rows, 1,e.getCateParentName()+"-"+e.getCateName(), cellStyle);
+            ExcelUtils.addCell(rows, 2,e.getBuildingName(), cellStyle);
+            ExcelUtils.addCell(rows, 3,e.getRoomCount(), cellStyle);
+            ExcelUtils.addCell(rows, 4,e.getCurrentCount() == null?0:e.getCurrentCount(), cellStyle);
+            ExcelUtils.addCell(rows, 5,e.getStatus() == 0?"启用":"停用", cellStyle);
             rowNum1++;
         };
         for (RoomDetailInfo e : roomDetailInfos) {
             HSSFRow rows = sheet2.createRow(rowNum2);
-            rows.createCell(0).setCellValue(e.getRoomCode());
-            rows.createCell(1).setCellValue(e.getStudentCode());
-            rows.createCell(2).setCellValue(e.getStudentName());
-            rows.createCell(3).setCellValue(e.getCollegeName());
-            rows.createCell(4).setCellValue(e.getClassName());
-            rows.createCell(5).setCellValue(e.getStudentSex());
-            rows.createCell(6).setCellValue(e.getStudentPhone());
-            rows.createCell(7).setCellValue(e.getCheckDate());
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
+            ExcelUtils.addCell(rows, 1,e.getStudentCode(), cellStyle);
+            ExcelUtils.addCell(rows, 2,e.getStudentName(), cellStyle);
+            ExcelUtils.addCell(rows, 3,e.getCollegeName(), cellStyle);
+            ExcelUtils.addCell(rows, 4,e.getClassName(), cellStyle);
+            ExcelUtils.addCell(rows, 5,e.getStudentSex(), cellStyle);
+            ExcelUtils.addCell(rows, 6,e.getStudentPhone(), cellStyle);
+            ExcelUtils.addCell(rows, 7,e.getCheckDate(), cellStyle);
             if(AirUtils.hv(e.getDeleteDate())) {
-                rows.createCell(8).setCellValue(e.getDeleteDate());
+                ExcelUtils.addCell(rows, 8,e.getDeleteDate(), cellStyle);
             }
-            rows.createCell(9).setCellValue(e.getBedCount());
+            ExcelUtils.addCell(rows, 9,e.getBedCount(), cellStyle);
             rowNum2++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

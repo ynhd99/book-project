@@ -32,9 +32,9 @@ public class SaleRoomExcelImportTask extends AbstractBaseExcelImportTask {
     @Override
     public Map<Integer, ExcelMetaData> initMetaData() {
         Map<Integer, ExcelMetaData> map = new LinkedHashMap<>();
-        map.put(0, new ExcelMetaData("宿舍号", "roomCode", true, ExcelConstants.BASE_RGE.CODE, false));
+        map.put(0, new ExcelMetaData("宿舍号", "roomCode", true, ExcelConstants.BASE_RGE.ROOMCODE, false));
         map.put(1, new ExcelMetaData("类别", "cateName", true, ExcelConstants.BASE_RGE.NAME));
-        map.put(2, new ExcelMetaData("楼号", "buildingName", true, ExcelConstants.BASE_RGE.NAME));
+        map.put(2, new ExcelMetaData("宿舍楼", "buildingName", true, ExcelConstants.BASE_RGE.NAME));
         map.put(3, new ExcelMetaData("容纳人数", "roomCount", true, ExcelConstants.BASE_RGE.NUMBER));
         map.put(4, new ExcelMetaData("现有人数", "currentCount", true, ExcelConstants.BASE_RGE.NUMBER));
         return map;
@@ -95,7 +95,7 @@ public class SaleRoomExcelImportTask extends AbstractBaseExcelImportTask {
                 });
                 roomEntityList.forEach(e -> {
                     if (AirUtils.hv(custormMap.get(e.getRoomCode()))) {
-                        errorList.add("第" + e.getRow() + "行" + "第" + col + "列“学号”与系统已存在的编号重复");
+                        errorList.add("第" + e.getRow() + "行" + "第" + col + "列“宿舍号”与系统已存在的编号重复");
                     }
                 });
             }

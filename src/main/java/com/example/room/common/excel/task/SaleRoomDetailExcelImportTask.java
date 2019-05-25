@@ -43,9 +43,9 @@ public class SaleRoomDetailExcelImportTask extends AbstractBaseExcelImportTask {
     @Override
     public Map<Integer, ExcelMetaData> initMetaData() {
         Map<Integer, ExcelMetaData> map = new LinkedHashMap<>();
-        map.put(0, new ExcelMetaData("宿舍号", "roomCode", true, ExcelConstants.BASE_RGE.CODE, false));
+        map.put(0, new ExcelMetaData("宿舍号", "roomCode", true, ExcelConstants.BASE_RGE.ROOMCODE, false));
         map.put(1, new ExcelMetaData("学号", "studentCode", true, ExcelConstants.BASE_RGE.CODE));
-        map.put(2, new ExcelMetaData("入住日期", "checkDate", true, ExcelConstants.BASE_RGE.NAME));
+        map.put(2, new ExcelMetaData("入住日期", "checkDate", true, ExcelConstants.BASE_RGE.DATE));
         map.put(3, new ExcelMetaData("床号", "bedCount", true, ExcelConstants.BASE_RGE.NUMBER));
         return map;
     }
