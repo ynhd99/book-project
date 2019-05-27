@@ -13,6 +13,7 @@ public class ExcelUtils {
     public static HSSFWorkbook exportExcel(String title, String[] headers){
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet = workbook.createSheet(title);
+        sheet.setColumnWidth(0,3766);
         HSSFRow row = sheet.createRow(0);
         //设置表头数据
         for (int i = 0;i<headers.length;i++){
@@ -63,7 +64,7 @@ public class ExcelUtils {
         headerStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
         Font headerFont = wb.createFont();
         headerFont.setFontName("Arial");
-        headerFont.setFontHeightInPoints((short) 16);
+        headerFont.setFontHeightInPoints((short) 12);
         headerFont.setBold(true);
         headerFont.setColor(IndexedColors.WHITE.getIndex());
         headerStyle.setFont(headerFont);
@@ -89,11 +90,11 @@ public class ExcelUtils {
         cellStyle.setVerticalAlignment(VerticalAlignment.CENTER);// 设置居中
         Font titleFont = wb.createFont();
         titleFont.setFontName("Arial");
-        titleFont.setFontHeightInPoints((short) 14);
+        titleFont.setFontHeightInPoints((short) 10);
         cellStyle.setFont(titleFont);
         return cellStyle;
     }
-    public static Cell addCell(Row row, int column, Object val, CellStyle style) {
+    public static Cell addCell(Row row, int column, Object val, CellStyle style, HSSFSheet sheet) {
         Cell cell = row.createCell(column);
         try {
             if (val == null) {
@@ -119,6 +120,7 @@ public class ExcelUtils {
             cell.setCellValue(val.toString());
         }
         cell.setCellStyle(style);
+        sheet.autoSizeColumn(column);
         return cell;
     }
 

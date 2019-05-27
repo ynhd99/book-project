@@ -17,6 +17,7 @@
                 concat('%',#{queryString},'%')
             </if>
         </where>
+        order by t.update_time desc ,t.teacher_code asc
     </select>
     <!--编辑宿管员信息-->
     <update id="updateTeacher" parameterType="com.example.room.entity.TeacherInfo">

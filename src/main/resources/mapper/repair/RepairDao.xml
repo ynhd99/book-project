@@ -83,4 +83,33 @@
             </if>
         </where>
     </select>
+    <!--新增维修情况-->
+    <insert id="batchAddRepair" parameterType="com.example.room.entity.RepairInfo">
+        insert into repair
+        (
+        id,
+        room_id,
+        goods_id,
+        remark,
+        repair_person,
+        repair_date,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.roomId},
+        #{item.goodsId},
+        #{item.remark},
+        #{item.repairPerson},
+        #{item.repairDate},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>

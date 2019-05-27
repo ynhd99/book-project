@@ -165,12 +165,12 @@ public class StudentServiceImpl implements StudentService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (StudentInfo e : studentInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getStudentCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getStudentName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getClassName(), cellStyle);
-            ExcelUtils.addCell(rows, 4,e.getStudentSex(), cellStyle);
-            ExcelUtils.addCell(rows, 5,e.getStudentPhone(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getStudentCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getStudentName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getClassName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 4,e.getStudentSex(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 5,e.getStudentPhone(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

@@ -64,4 +64,31 @@
             </if>
         </where>
     </select>
+    <!--批量新增卫生检查情况-->
+    <insert id="batchAddHealth" parameterType="com.example.room.entity.HealthInfo">
+        insert into health
+        (
+        id,
+        room_id,
+        check_date,
+        check_point,
+        remark,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.roomId},
+        #{item.checkDate},
+        #{item.checkPoint},
+        #{item.remark},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>

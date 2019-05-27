@@ -38,4 +38,12 @@ public interface ExcelCommonService {
      * @param errorList
      */
     public Map<String, BuildingInfo> checkBuilding(List<ExcelBaseData> baseDataList, List<String> errorList);
+
+    /**
+     * 校验物品是否存在
+     * @param baseDataList
+     * @param errorList
+     * @return
+     */
+    public Map<String,GoodsInfo> checkGoods(List<ExcelBaseData> baseDataList, List<String> errorList);
 }

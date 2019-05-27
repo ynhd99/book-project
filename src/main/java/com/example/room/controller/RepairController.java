@@ -1,11 +1,15 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.entity.HealthInfo;
 import com.example.room.entity.RepairInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class RepairController {
     @Autowired
     private RepairService repairService;
+    @Autowired
+    private ExcelBaseService excelBaseService;
 
     /**
      * 新增维修信息
@@ -65,5 +71,13 @@ public class RepairController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         repairService.exportRepair( response);
+    }
+    /**
+     * 导入学生信息
+     * @param file
+     */
+    @PostMapping("importRepair")
+    public ExcelImportMessage importRepair(@RequestParam("file") MultipartFile file){
+        return excelBaseService.importRepair(file, RepairInfo.class);
     }
 }

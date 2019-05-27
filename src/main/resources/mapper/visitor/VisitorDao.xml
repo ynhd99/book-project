@@ -79,4 +79,35 @@
             </if>
         </where>
     </select>
+    <!--批量新增访问者信息-->
+    <insert id="batchAddVisitor" parameterType="com.example.room.entity.VisitorInfo">
+        insert into visitor
+        (
+        id,
+        visitor_name,
+        identity_code,
+        phone_number,
+        recept_name,
+        start_time,
+        remark,
+        create_time,
+        create_user,
+        update_time,
+        update_user
+        )values
+        <foreach collection="list" item="item" index="index"
+                 open="(" separator="),(" close=")">
+        #{item.id},
+        #{item.visitorName},
+        #{item.identityCode},
+        #{item.phoneNumber},
+        #{item.receptName},
+        #{item.startTime},
+        #{item.remark},
+        #{item.createTime},
+        #{item.createUser},
+        #{item.updateTime},
+        #{item.updateUser}
+        </foreach>
+    </insert>
 </mapper>

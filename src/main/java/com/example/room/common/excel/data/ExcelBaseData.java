@@ -21,4 +21,5 @@ public class ExcelBaseData{
    private String role;
    private String cateName;
    private String builidngName;
+   private String goodsName;
 }

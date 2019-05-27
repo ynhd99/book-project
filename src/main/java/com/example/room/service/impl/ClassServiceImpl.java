@@ -164,10 +164,10 @@ public class ClassServiceImpl implements ClassService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (ClassInfo e : classInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getClassCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getClassName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getStatus() == 0?"启用":"停用", cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getClassCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getClassName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getStatus() == 0?"启用":"停用", cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

@@ -25,6 +25,8 @@ public class ExcelCommonServiceImpl implements ExcelCommonService {
     private RoomCateDao roomCateDao;
     @Autowired
     private BuildingDao buildingDao;
+    @Autowired
+    private GoodsDao goodsDao;
     /**
      * 校验学院名称和编码是否一致
      * @param baseDataList
@@ -161,4 +163,33 @@ public class ExcelCommonServiceImpl implements ExcelCommonService {
             errorList.add("该表中楼号在系统中全不存在");
         }
         return map;
-}}
+}
+
+    /**
+     * 根据物品名称校验物品是否存在
+     * @param baseDataList
+     * @param errorList
+     * @return
+     */
+    @Override
+    public Map<String, GoodsInfo> checkGoods(List<ExcelBaseData> baseDataList, List<String> errorList) {
+        Map<String,GoodsInfo> map = new HashMap<>();
+        List<String> nameList = baseDataList.stream().map(e->e.getGoodsName()).distinct().collect(Collectors.toList());
+        List<GoodsInfo> goodsInfos = goodsDao.getGoodsByName(nameList);
+        if(AirUtils.hv(goodsInfos)){
+            goodsInfos.forEach(e->{
+                map.put(e.getGoodsName(),e);
+            });
+            baseDataList.forEach(item->{
+                if(!AirUtils.hv(map.get(item.getGoodsName()))){
+                    errorList.add("第"+item.getRow()+"行物品在系统中不存在");
+                }else if(map.get(item.getGoodsName()).getStatus() == 1){
+                    errorList.add("第"+item.getRow()+"行物品，已经停用");
+                }
+            });
+        }else{
+            errorList.add("该表中物品在系统中全不存在");
+        }
+        return map;
+    }
+}

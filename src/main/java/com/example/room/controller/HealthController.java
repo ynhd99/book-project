@@ -1,11 +1,15 @@
 package com.example.room.controller;
 
+import com.example.room.common.excel.ExcelImportMessage;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.entity.HealthInfo;
+import com.example.room.entity.VisitorInfo;
 import com.example.room.entity.dto.MessageBody;
+import com.example.room.service.ExcelBaseService;
 import com.example.room.service.HealthService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 public class HealthController {
     @Autowired
     private HealthService healthService;
+    @Autowired
+    private ExcelBaseService excelBaseService;
 
     /**
      * 新增卫生信息
@@ -65,5 +71,13 @@ public class HealthController {
     @ResponseBody
     public void export(HttpServletRequest request, HttpServletResponse response){
         healthService.exportHealth( response);
+    }
+    /**
+     * 导入学生信息
+     * @param file
+     */
+    @PostMapping("importHealth")
+    public ExcelImportMessage importVisitor(@RequestParam("file") MultipartFile file){
+        return excelBaseService.importHealth(file, HealthInfo.class);
     }
 }

@@ -53,4 +53,5 @@ public class RepairInfo extends Base {
      * 驳回原因
      */
     private String reason;
+    private String date;
 }

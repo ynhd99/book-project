@@ -177,28 +177,28 @@ public class RoomServiceImpl implements RoomService {
         }
         for (RoomEntity e : roomEntities) {
             HSSFRow rows = sheet1.createRow(rowNum1);
-            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getCateParentName()+"-"+e.getCateName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getBuildingName(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getRoomCount(), cellStyle);
-            ExcelUtils.addCell(rows, 4,e.getCurrentCount() == null?0:e.getCurrentCount(), cellStyle);
-            ExcelUtils.addCell(rows, 5,e.getStatus() == 0?"启用":"停用", cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle,sheet1);
+            ExcelUtils.addCell(rows, 1,e.getCateParentName()+"-"+e.getCateName(), cellStyle,sheet1);
+            ExcelUtils.addCell(rows, 2,e.getBuildingName(), cellStyle,sheet1);
+            ExcelUtils.addCell(rows, 3,e.getRoomCount(), cellStyle,sheet1);
+            ExcelUtils.addCell(rows, 4,e.getCurrentCount() == null?0:e.getCurrentCount(), cellStyle,sheet1);
+            ExcelUtils.addCell(rows, 5,e.getStatus() == 0?"启用":"停用", cellStyle,sheet1);
             rowNum1++;
         };
         for (RoomDetailInfo e : roomDetailInfos) {
             HSSFRow rows = sheet2.createRow(rowNum2);
-            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getStudentCode(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getStudentName(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getCollegeName(), cellStyle);
-            ExcelUtils.addCell(rows, 4,e.getClassName(), cellStyle);
-            ExcelUtils.addCell(rows, 5,e.getStudentSex(), cellStyle);
-            ExcelUtils.addCell(rows, 6,e.getStudentPhone(), cellStyle);
-            ExcelUtils.addCell(rows, 7,e.getCheckDate(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 1,e.getStudentCode(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 2,e.getStudentName(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 3,e.getCollegeName(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 4,e.getClassName(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 5,e.getStudentSex(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 6,e.getStudentPhone(), cellStyle,sheet2);
+            ExcelUtils.addCell(rows, 7,e.getCheckDate(), cellStyle,sheet2);
             if(AirUtils.hv(e.getDeleteDate())) {
-                ExcelUtils.addCell(rows, 8,e.getDeleteDate(), cellStyle);
+                ExcelUtils.addCell(rows, 8,e.getDeleteDate(), cellStyle,sheet2);
             }
-            ExcelUtils.addCell(rows, 9,e.getBedCount(), cellStyle);
+            ExcelUtils.addCell(rows, 9,e.getBedCount(), cellStyle,sheet2);
             rowNum2++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

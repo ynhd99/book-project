@@ -36,4 +36,11 @@ public interface HealthDao {
      * @return
      */
     List<HealthInfo> findHealthForPage(HealthInfo healthInfo);
+
+    /**
+     * 批量新增卫生检查情况
+     * @param healthInfos
+     * @return
+     */
+   int batchAddHealth(List<HealthInfo> healthInfos);
 }

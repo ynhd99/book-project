@@ -53,4 +53,11 @@ public interface GoodsDao {
      */
     GoodsInfo getGoodsByCode(String code);
 
+    /**
+     * 根据名称获取物品列表
+     * @param nameList
+     * @return
+     */
+    List<GoodsInfo> getGoodsByName(List<String> nameList);
+
 }

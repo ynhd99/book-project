@@ -24,6 +24,7 @@
                 and s.class_id = #{classId}
             </if>
         </where>
+        order by s.update_time desc ,s.student_code asc
     </select>
     <!--编辑学生信息-->
     <update id="updateStudent" parameterType="com.example.room.entity.StudentInfo">

@@ -78,4 +78,17 @@
             and goods_code = #{code}
         </where>
     </select>
+    <!--根据物品名称查询物品信息-->
+    <select id="getGoodsByName" resultType="com.example.room.entity.GoodsInfo">
+        select id,goods_name goodsName,goods_code goodsCode,status
+        from goods
+        <where>
+            delete_flag = 0
+            and goods_name in
+            <foreach collection="list" item="item" close=")" open="(" separator=",">
+                #{item}
+            </foreach>
+        </where>
+        order by status asc,goods_code desc
+    </select>
 </mapper>

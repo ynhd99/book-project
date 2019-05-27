@@ -146,10 +146,10 @@ public class StaffServiceimpl implements StaffService {
         HSSFSheet sheet = workbook.getSheet(title);
         for (StaffInfo e : staffInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getStaffCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getStaffName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getStaffSex(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getStaffPhone(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getStaffCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getStaffName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getStaffSex(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getStaffPhone(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

@@ -23,6 +23,12 @@ public class ExcelBaseServiceImpl implements ExcelBaseService {
     private SaleRoomExcelImportTask saleRoomExcelImportTask;
     @Autowired
     private SaleRoomDetailExcelImportTask saleRoomDetailExcelImportTask;
+    @Autowired
+    private SaleVisitorExcelImportTask saleVisitorExcelImportTask;
+    @Autowired
+    private SaleHealthExcelImportTask saleHealthExcelImportTask;
+    @Autowired
+    private SaleRepairExcelImportTask saleRepairExcelImportTask;
 
     @Override
     public ExcelImportMessage importStudent(MultipartFile file, Class tClass) {
@@ -63,6 +69,24 @@ public class ExcelBaseServiceImpl implements ExcelBaseService {
     @Override
     public ExcelImportMessage importRoomDetail(MultipartFile file, Class tClass) {
         ExcelImportMessage message = saleRoomDetailExcelImportTask.execute(file, tClass);
+        return message;
+    }
+
+    @Override
+    public ExcelImportMessage importVisitor(MultipartFile file, Class tClass) {
+        ExcelImportMessage message = saleVisitorExcelImportTask.execute(file, tClass);
+        return message;
+    }
+
+    @Override
+    public ExcelImportMessage importHealth(MultipartFile file, Class tClass) {
+        ExcelImportMessage message = saleHealthExcelImportTask.execute(file, tClass);
+        return message;
+    }
+
+    @Override
+    public ExcelImportMessage importRepair(MultipartFile file, Class tClass) {
+        ExcelImportMessage message = saleRepairExcelImportTask.execute(file, tClass);
         return message;
     }
 }

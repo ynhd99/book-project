@@ -122,9 +122,9 @@ public class CollegeServiceImpl implements CollegeService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (CollegeInfo e : collegeInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getCollegeCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getCollegeName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getStatus() == 0?"启用":"停用", cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getCollegeCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getCollegeName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getStatus() == 0?"启用":"停用", cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

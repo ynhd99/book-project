@@ -36,4 +36,8 @@ public interface RepairDao {
      * @return
      */
     List<RepairInfo> findRepairForPage(RepairInfo repairInfo);
+    /**
+     * 批量新增
+     */
+    int batchAddRepair(List<RepairInfo> repairInfos);
 }

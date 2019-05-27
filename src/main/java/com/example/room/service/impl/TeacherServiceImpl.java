@@ -149,11 +149,11 @@ public class TeacherServiceImpl implements TeacherService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (TeacherInfo e : teacherInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getTeacherCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getTeacherName(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getTeacherSex(), cellStyle);
-            ExcelUtils.addCell(rows, 4,e.getTeacherPhone(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getTeacherCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getTeacherName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getCollegeName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getTeacherSex(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 4,e.getTeacherPhone(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

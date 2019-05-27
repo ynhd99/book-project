@@ -93,13 +93,13 @@ public class VisitorServiceImpl implements VisitorService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (VisitorInfo e : visitorInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getVisitorName(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getIdentityCode(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getPhoneNumber(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getReceptName(), cellStyle);
-            ExcelUtils.addCell(rows, 4,e.getStartTime(), cellStyle);
-            ExcelUtils.addCell(rows, 5,e.getEndTime(), cellStyle);
-            ExcelUtils.addCell(rows, 6,e.getRemark(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getVisitorName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getIdentityCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getPhoneNumber(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getReceptName(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 4,e.getStartTime(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 5,e.getEndTime(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 6,e.getRemark(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

@@ -88,7 +88,7 @@
                 and r.id = #{roomId}
             </if>
             <if test="null != collegeId and '' != collegeId">
-                and c.college_id = #{collegeId}
+                and c.id = #{collegeId}
             </if>
             <if test="null != classId and '' != classId">
                 and cs.id = #{classId}

@@ -23,4 +23,6 @@ public class HealthInfo extends Base {
     private Date endDate;
     private BigDecimal checkPoint;
     private String remark;
+    private String point;
+    private String date;
 }

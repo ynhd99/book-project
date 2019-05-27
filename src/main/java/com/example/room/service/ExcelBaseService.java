@@ -12,4 +12,7 @@ public interface ExcelBaseService {
     ExcelImportMessage importClass(MultipartFile file,Class tClass);
     ExcelImportMessage importRoom(MultipartFile file,Class tClass);
     ExcelImportMessage importRoomDetail(MultipartFile file,Class tClass);
+    ExcelImportMessage importVisitor(MultipartFile file,Class tClass);
+    ExcelImportMessage importHealth(MultipartFile file,Class tClass);
+    ExcelImportMessage importRepair(MultipartFile file,Class tClass);
 }

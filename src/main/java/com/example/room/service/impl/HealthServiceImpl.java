@@ -92,10 +92,10 @@ public class HealthServiceImpl implements HealthService {
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         for (HealthInfo e : healthInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getCheckDate(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getCheckPoint().toString(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getRemark(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 1,e.getCheckDate(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getCheckPoint().toString(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getRemark(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

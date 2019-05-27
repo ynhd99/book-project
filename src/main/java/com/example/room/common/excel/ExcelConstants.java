@@ -34,9 +34,13 @@ public class ExcelConstants {
          * 日期
          */
         public static String DATE = "^(\\d{4})(-)(\\d{2})(-)(\\d{2})$";
+        public static String TIME = "^(\\d{4})(-)(\\d{2})(-)(\\d{2}) (\\d{2})(:)(\\d{2})(:)(\\d{2})$";
         public static String CODE = "^[0-9]{2,10}$";
         public static String ROOMCODE = "^[0-9A-z]{2,10}$";
         public static String NAME = "^[\\u4e00-\\u9fa5A-z0-9]{2,20}$";
+        public static String POINT = "^([1-9]\\d{0,15}|0)(\\.\\d{1,4})?$";
+        public static String REMARK= "^[\\u4e00-\\u9fa5A-z0-9，]{0,100}$";
+        public static String IDENTITY = "^[1-9]\\d{5}(18|19|([23]\\d))\\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\\d{3}[0-9Xx]$";
     }
 
     public static String ROW_NAME = "row";

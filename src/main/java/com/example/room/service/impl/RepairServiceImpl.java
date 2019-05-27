@@ -101,12 +101,13 @@ public class RepairServiceImpl implements RepairService {
                 message = "已驳回";
             }
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle);
-            ExcelUtils.addCell(rows, 1,e.getRepairDate(), cellStyle);
-            ExcelUtils.addCell(rows, 2,e.getRepairPerson(), cellStyle);
-            ExcelUtils.addCell(rows, 3,e.getRemark(), cellStyle);
-            ExcelUtils.addCell(rows, 4,message, cellStyle);
-            ExcelUtils.addCell(rows, 5,e.getReason(), cellStyle);
+            ExcelUtils.addCell(rows, 0,e.getRoomCode(), cellStyle,sheet);
+            ExcelUtils.addCell(rows,1,e.getGoodsName(),cellStyle,sheet);
+            ExcelUtils.addCell(rows, 2,e.getRepairDate(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 3,e.getRepairPerson(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 4,e.getRemark(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 5,message, cellStyle,sheet);
+            ExcelUtils.addCell(rows, 6,e.getReason(), cellStyle,sheet);
             rowNum++;
         };
         ExcelUtils.returnExport(workbook,response,fileName);

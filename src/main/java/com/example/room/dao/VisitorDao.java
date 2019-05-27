@@ -33,4 +33,11 @@ public interface VisitorDao {
      * @return
      */
     List<VisitorInfo> findVisitorForPage(VisitorInfo visitorInfo);
+
+    /**
+     * 批量新增访问者信息
+     * @param visitorInfos
+     * @return
+     */
+    int batchAddVisitor(List<VisitorInfo> visitorInfos);
 }
