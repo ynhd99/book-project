@@ -1,5 +1,6 @@
 package com.example.room.service.impl;
 
+import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.dao.AuthorityDao;
 import com.example.room.dao.UserDao;
@@ -115,6 +116,9 @@ public class AuthorityServiceImpl implements AuthorityService {
                 item.setUpdateTime(new Date());
                 item.setUpdateUser(userController.getUser());
             });
+            if(AirUtils.hv(authorityDao.getRoleByCode(roleInfo.getRoleCode()))){
+                throw new SaleBusinessException("角色编码已经存在");
+            }
             authorityDao.addRoleAuthority(roleInfo.getRoleAuthorityList());
         }
         return authorityDao.addRole(roleInfo);

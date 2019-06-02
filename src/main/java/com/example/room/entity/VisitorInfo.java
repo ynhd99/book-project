@@ -43,6 +43,6 @@ public class VisitorInfo extends Base {
      * 访问事由
      */
     private String remark;
-    private String sTime;
-    private String eTime;
+    private String startDate;
+    private String endDate;
 }

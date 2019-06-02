@@ -169,11 +169,13 @@ public class RoomServiceImpl implements RoomService {
         HSSFSheet sheet2 = workbook.createSheet(title2);
         HSSFRow row = sheet2.createRow(0);
         CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
+        CellStyle headStyle = ExcelUtils.getHeaderStyle(workbook);
         //设置表头数据
         for (int i = 0;i<header2.length;i++){
             HSSFCell cell = row.createCell(i);
             HSSFRichTextString text = new HSSFRichTextString(header2[i]);
             cell.setCellValue(text);
+            cell.setCellStyle(headStyle);
         }
         for (RoomEntity e : roomEntities) {
             HSSFRow rows = sheet1.createRow(rowNum1);

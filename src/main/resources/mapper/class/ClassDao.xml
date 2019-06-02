@@ -100,6 +100,7 @@
         cg.college_name collegeName,
         c.class_name className,
         c.class_code classCode,
+        cg.id collegeid,
         c.status
         FROM class c
         INNER join college cg on c.college_id = cg.id

@@ -168,7 +168,7 @@
         set delete_flag = 1
         <where>
             id in
-            <foreach close=")" collection="list" item="item" open="(">
+            <foreach close=")" collection="list" item="item" open="(" separator=",">
                 #{item}
             </foreach>
         </where>
@@ -180,7 +180,7 @@
         set u.delete_flag = 1
         <where>
             s.id in
-            <foreach close=")" collection="list" item="item" open="(">
+            <foreach close=")" collection="list" item="item" open="(" separator=",">
                 #{item}
             </foreach>
         </where>

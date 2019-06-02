@@ -90,4 +90,11 @@ public interface AuthorityDao {
      * @return
      */
     List<RoleInfo> getRoleByName(List<String> nameList);
+
+    /**
+     * 根据编码获取角色信息
+     * @param roleCode
+     * @return
+     */
+    RoleInfo getRoleByCode(String roleCode);
 }

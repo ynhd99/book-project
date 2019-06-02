@@ -84,6 +84,8 @@ public class SaleHealthExcelImportTask extends AbstractBaseExcelImportTask {
                         errorList.add("第" + e.getRow() + "行" + "第" + col + "列“宿舍号”在系统中不存在");
                     }
                 });
+            }else{
+                errorList.add("宿舍号在系统中都不存在");
             }
         }
         return roomMap;

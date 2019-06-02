@@ -118,4 +118,11 @@
             #{item}
         </foreach>
     </select>
+    <!--通过编码获取角色信息-->
+    <select id="getRoleByCode" resultType="com.example.room.entity.RoleInfo">
+        SELECT
+        id,role_code roleCode,role_name roleName,status
+        FROM role
+        WHERE delete_flag = 0 and role_code = #{roleCode}
+    </select>
 </mapper>

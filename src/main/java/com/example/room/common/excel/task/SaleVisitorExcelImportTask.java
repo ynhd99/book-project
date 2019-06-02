@@ -32,8 +32,8 @@ public class SaleVisitorExcelImportTask extends AbstractBaseExcelImportTask {
         map.put(1, new ExcelMetaData("身份证号", "identityCode", true, ExcelConstants.BASE_RGE.IDENTITY));
         map.put(2, new ExcelMetaData("手机号", "phoneNumber", true, ExcelConstants.BASE_RGE.RELATION));
         map.put(3, new ExcelMetaData("接待人", "receptName", true, ExcelConstants.BASE_RGE.NAME));
-        map.put(4, new ExcelMetaData("开始时间", "sTime", true, ExcelConstants.BASE_RGE.TIME));
-        map.put(5, new ExcelMetaData("结束时间", "eTime", true, ExcelConstants.BASE_RGE.TIME));
+        map.put(4, new ExcelMetaData("开始时间", "startDate", true, ExcelConstants.BASE_RGE.TIME));
+        map.put(5, new ExcelMetaData("结束时间", "endDate", true, ExcelConstants.BASE_RGE.TIME));
         map.put(6, new ExcelMetaData("访问事由", "remark", true, ExcelConstants.BASE_RGE.REMARK));
         return map;
     }
@@ -66,9 +66,9 @@ public class SaleVisitorExcelImportTask extends AbstractBaseExcelImportTask {
         //封装客户基础信息
         healthInfos.forEach(e->{
             e.setId(UUIDGenerator.getUUID());
-            e.setStartTime(DateUtils.string2Date(e.getSTime(),DateUtils.FORMAT1));
-            if(AirUtils.hv(e.getETime())){
-                e.setEndTime(DateUtils.string2Date(e.getETime(),DateUtils.FORMAT1));
+            e.setStartTime(DateUtils.string2Date(e.getStartDate(),DateUtils.FORMAT1));
+            if(AirUtils.hv(e.getEndDate())){
+                e.setEndTime(DateUtils.string2Date(e.getEndDate(),DateUtils.FORMAT1));
             }
             e.setCreateTime(new Date());
             e.setCreateUser(userController.getUser());

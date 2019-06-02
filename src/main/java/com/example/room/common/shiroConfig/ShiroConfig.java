@@ -24,7 +24,7 @@ public class ShiroConfig {
         map.put("/user/*", "anon");
         map.put("/**", "authc");
         //shiroFilterFactoryBean.setUnauthorizedUrl("/user/unAnth");
-        shiroFilterFactoryBean.setLoginUrl("/user/unAnth");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/user/unAnth");
         shiroFilterFactoryBean.setFilterChainDefinitionMap(map);
         return shiroFilterFactoryBean;
     }
