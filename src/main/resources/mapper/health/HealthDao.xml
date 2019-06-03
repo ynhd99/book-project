@@ -63,6 +63,7 @@
                 and h.check_date &lt;= #{endDate}
             </if>
         </where>
+        order by h.check_date desc ,r.room_code asc
     </select>
     <!--批量新增卫生检查情况-->
     <insert id="batchAddHealth" parameterType="com.example.room.entity.HealthInfo">

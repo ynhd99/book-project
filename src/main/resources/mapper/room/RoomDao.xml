@@ -64,7 +64,7 @@
                 and r.status = #{status}
             </if>
         </where>
-        order by r.status asc ,r.update_time desc
+        order by r.status asc ,r.room_code desc
     </select>
     <!--删除宿舍信息-->
     <update id="deleteRoom" parameterType="com.example.room.entity.RoomEntity">
@@ -143,4 +143,16 @@
         #{item.updateUser}
         </foreach>
     </insert>
+    <!--根据宿舍楼获取宿舍信息-->
+    <select id="findRoomByBuilding" resultType="int">
+        select count(*)
+        from room
+        where delete_flag = 0 and building_id =#{id}
+    </select>
+    <!--根据宿舍楼获取宿舍信息-->
+    <select id="findRoomByCate" resultType="int">
+        select count(*)
+        from room
+        where delete_flag = 0 and cate_id =#{id}
+    </select>
 </mapper>

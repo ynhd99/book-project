@@ -24,7 +24,7 @@
                 and s.class_id = #{classId}
             </if>
         </where>
-        order by s.update_time desc ,s.student_code asc
+        order by s.student_code asc,cc.class_code asc
     </select>
     <!--编辑学生信息-->
     <update id="updateStudent" parameterType="com.example.room.entity.StudentInfo">
@@ -216,4 +216,10 @@
         #{item.updateUser}
         </foreach>
     </insert>
+    <!--根据班级id获取学生数量-->
+    <select id="findStudentByClass" resultType="int">
+        select count(*)
+        from student
+        where delete_flag = 0 and class_id = #{id}
+    </select>
 </mapper>

@@ -105,4 +105,16 @@
         </where>
            order by r.room_code asc ,rd.check_date desc
     </select>
+    <!--根据学生id获取入住信息-->
+    <select id="findDetailByStudent" resultType="int">
+        select count(*)
+        from room_detail
+        where delete_flag = 0 and student_id = #{id}
+    </select>
+    <!--根据宿舍获取详情数量-->
+    <select resultType="int" id="findDetailByRoom">
+        select count(*)
+        from room_detail
+        where delete_flag = 0 and room_id = #{id}
+    </select>
 </mapper>

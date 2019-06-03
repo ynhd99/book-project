@@ -74,9 +74,16 @@ public interface StaffDao {
     List<StaffInfo> getDataByCodes(List<String> codeList);
 
     /**
-     * 批量新增老师信息
+     * 批量新增宿管员信息
      * @param staffInfos
      * @return
      */
     int batchAddStaff(List<StaffInfo> staffInfos);
+
+    /**
+     * 根据id获取宿管员信息
+     * @param id
+     * @return
+     */
+    String findStaffById(String id);
 }

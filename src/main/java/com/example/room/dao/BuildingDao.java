@@ -67,4 +67,11 @@ public interface BuildingDao {
      * @return
      */
     List<BuildingInfo> getBuildingByName(List<String> nameList);
+
+    /**
+     * 根据宿舍员查询宿舍楼信息
+     * @param id
+     * @return
+     */
+    int findBuildingByStaff(String id);
 }

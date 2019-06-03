@@ -2,6 +2,7 @@ package com.example.room.service.impl;
 
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
+import com.example.room.dao.ClassDao;
 import com.example.room.dao.CollegeDao;
 import com.example.room.entity.CollegeInfo;
 import com.example.room.entity.StudentInfo;
@@ -32,6 +33,8 @@ public class CollegeServiceImpl implements CollegeService {
     private CollegeDao collegeDao;
     @Autowired
     private UserController userController;
+    @Autowired
+    private ClassDao classDao;
 
     /**
      * 添加学院信息
@@ -76,6 +79,9 @@ public class CollegeServiceImpl implements CollegeService {
     public int updateStatus(CollegeInfo collegeInfo) {
         collegeInfo.setUpdateTime(new Date());
         collegeInfo.setUpdateUser(userController.getUser());
+        if(classDao.findClassByCollege(collegeInfo.getId())>0 && collegeInfo.getStatus() == 1){
+            throw new SaleBusinessException("该学院下已经存在班级，不可进行停用");
+        }
         return collegeDao.updateStatus(collegeInfo);
     }
 

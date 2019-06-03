@@ -37,6 +37,7 @@
                 and goods_code like concat('%',#{queryString},'%') or goods_name like concat('%',#{queryString},'%')
             </if>
         </where>
+        order by status asc,goods_code asc
     </select>
     <!--更新班级管理数据-->
     <update id="updateGoods">

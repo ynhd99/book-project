@@ -70,4 +70,18 @@ public interface RoomCateDao {
      * @return
      */
     List<RoomCategory> getCateByName(List<String> nameList);
+
+    /**
+     * 根据父级查子级
+     * @param id
+     * @return
+     */
+    int findRoomByParent(String id);
+
+    /**
+     * 根据id删除宿舍分类
+     * @param id
+     * @return
+     */
+    int deleteRoomCate(String id);
 }

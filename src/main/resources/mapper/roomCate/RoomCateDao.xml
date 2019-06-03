@@ -66,7 +66,7 @@
                 and cate_code like concat('%',#{queryString},'%') or cate_name like concat('%',#{queryString},'%')
             </if>
         </where>
-        order by status asc ,update_time desc
+        order by status asc ,cate_code asc
     </select>
     <!--根据不同级别过去分类-->
     <select id="getCategoryByQuery" resultType="com.example.room.entity.RoomCategory">
@@ -106,8 +106,8 @@
           r.delete_flag = 0
           order by r.status asc,r.cate_code asc
     </select>
-    <!--修改图书分类-->
-    <update id="updateRoomCate">
+    <!--修改宿舍分类-->
+    <update id="updateRoomCate" parameterType="com.example.room.entity.RoomCategory">
         update room_category
         <set>
             <if test="null != cateCode and '' != cateCode">
@@ -122,13 +122,12 @@
             <if test="null != updateTime">
             update_time = #{updateTime},
             </if>
-            <if test="null != status and ''!= status">
-                status = #{status},
+            <if test="null != status">
+                status = #{status}
             </if>
         </set>
         <where>
-            delete_flag = 0
-            and id = #{id}
+            delete_flag = 0 and id = #{id}
         </where>
     </update>
     <!--通名称查询宿舍类别数据-->
@@ -141,4 +140,16 @@
             #{item}
         </foreach>
     </select>
+    <!--根据父类查子类数量-->
+    <select id="findRoomByParent" resultType="int">
+        select count(*)
+        from room_category
+        where delete_flag = 0 and status = 0 and parent_id = #{id}
+    </select>
+    <!--删除宿舍分类-->
+    <update id="deleteRoomCate">
+        update room_category
+        set delete_flag = 1
+        where id = #{id} or parent_id = #{id}
+    </update>
 </mapper>

@@ -66,4 +66,12 @@ public interface RoomDao {
      * @return
      */
     int batchAddRoom(List<RoomEntity> roomInfos);
+    /**
+     * 根据id获取宿舍数量
+     */
+    int findRoomByBuilding(String id);
+    /**
+     * 根据类别id获取宿舍数量
+     */
+    int findRoomByCate(String id);
 }

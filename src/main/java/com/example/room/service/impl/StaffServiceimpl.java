@@ -2,6 +2,7 @@ package com.example.room.service.impl;
 
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
+import com.example.room.dao.BuildingDao;
 import com.example.room.dao.StaffDao;
 import com.example.room.dao.UserDao;
 import com.example.room.entity.StaffInfo;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -40,6 +42,8 @@ public class StaffServiceimpl implements StaffService {
     private UserService userService;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private BuildingDao buildingDao;
 
     /**
      * 分页查询宿管员信息
@@ -84,11 +88,23 @@ public class StaffServiceimpl implements StaffService {
     public int deleteStaff(StaffInfo staffInfo) {
         staffInfo.setUpdateTime(new Date());
         staffInfo.setUpdateUser(userController.getUser());
-        //批量删除宿管云列表
+        if (buildingDao.findBuildingByStaff(staffInfo.getId()) > 0) {
+            throw new SaleBusinessException("该宿管员已经管理宿舍楼了，不可进行删除");
+        }
+        //批量删除宿管理员列表
         List<String> list = staffInfo.getDeleteStaffList();
-        if(AirUtils.hv(list)){
-            staffDao.batchDeleteUser(list);
-            return staffDao.batchDelete(list);
+        if (AirUtils.hv(list)) {
+            List<String> staff = new ArrayList<>();
+            list.forEach(e->{
+                if(buildingDao.findBuildingByStaff(e)>0){
+                    String code = staffDao.findStaffById(e);
+                    throw new SaleBusinessException("编号为"+code+"的宿管员已经分配楼层，不可进行删除");
+                }else{
+                    staff.add(e);
+                }
+            });
+            staffDao.batchDeleteUser(staff);
+            return staffDao.batchDelete(staff);
         }
         //删除用户表
         UserInfo userInfo = new UserInfo();
@@ -130,28 +146,30 @@ public class StaffServiceimpl implements StaffService {
 
     /**
      * 导出宿管员信息
+     *
      * @param response
      */
     @Override
     public void exportStaff(HttpServletResponse response) {
         StaffInfo staffInfo = new StaffInfo();
         //获取到宿管员列表
-        List<StaffInfo> staffInfos= staffDao.getStaffForPage(staffInfo);
-        String header[] = {"教职工号","姓名","性别","手机号"};
+        List<StaffInfo> staffInfos = staffDao.getStaffForPage(staffInfo);
+        String header[] = {"教职工号", "姓名", "性别", "手机号"};
         String title = "宿管员信息表";
         String fileName = "宿管员信息表";
         int rowNum = 1;
-        HSSFWorkbook workbook = ExcelUtils.exportExcel(title,header);
-        CellStyle cellStyle =ExcelUtils.getCellStyle(workbook);
+        HSSFWorkbook workbook = ExcelUtils.exportExcel(title, header);
+        CellStyle cellStyle = ExcelUtils.getCellStyle(workbook);
         HSSFSheet sheet = workbook.getSheet(title);
         for (StaffInfo e : staffInfos) {
             HSSFRow rows = sheet.createRow(rowNum);
-            ExcelUtils.addCell(rows, 0,e.getStaffCode(), cellStyle,sheet);
-            ExcelUtils.addCell(rows, 1,e.getStaffName(), cellStyle,sheet);
-            ExcelUtils.addCell(rows, 2,e.getStaffSex(), cellStyle,sheet);
-            ExcelUtils.addCell(rows, 3,e.getStaffPhone(), cellStyle,sheet);
+            ExcelUtils.addCell(rows, 0, e.getStaffCode(), cellStyle, sheet);
+            ExcelUtils.addCell(rows, 1, e.getStaffName(), cellStyle, sheet);
+            ExcelUtils.addCell(rows, 2, e.getStaffSex(), cellStyle, sheet);
+            ExcelUtils.addCell(rows, 3, e.getStaffPhone(), cellStyle, sheet);
             rowNum++;
-        };
-        ExcelUtils.returnExport(workbook,response,fileName);
+        }
+        ;
+        ExcelUtils.returnExport(workbook, response, fileName);
     }
 }

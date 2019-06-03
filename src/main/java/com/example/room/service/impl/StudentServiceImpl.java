@@ -2,10 +2,12 @@ package com.example.room.service.impl;
 
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
+import com.example.room.dao.RoomDetailDao;
 import com.example.room.dao.StudentDao;
 import com.example.room.dao.UserDao;
 import com.example.room.entity.StudentInfo;
 import com.example.room.entity.UserInfo;
+import com.example.room.service.RoomDetailService;
 import com.example.room.service.StudentService;
 import com.example.room.service.UserService;
 import com.example.room.utils.common.AirUtils;
@@ -22,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,6 +43,8 @@ public class StudentServiceImpl implements StudentService {
     private UserService userService;
     @Autowired
     private UserDao userDao;
+    @Autowired
+    private RoomDetailDao roomDetailDao;
 
     /**
      * 分页查询学生信息
@@ -101,13 +106,25 @@ public class StudentServiceImpl implements StudentService {
     public int deleteStudent(StudentInfo studentInfo) {
         studentInfo.setUpdateTime(new Date());
         studentInfo.setUpdateUser(userController.getUser());
+        if(roomDetailDao.findDetailByStudent(studentInfo.getId())>0){
+            throw new SaleBusinessException("该学生已经办理入住，不可进行删除");
+        }
         //批量删除操作
         List<String> list = studentInfo.getDeleteStudentList();
         if (AirUtils.hv(list)) {
+            List<String> students = new ArrayList<>();
+            list.forEach(e->{
+                if(roomDetailDao.findDetailByStudent(e)>0){
+                    String code = studentDao.getDataById(e);
+                    throw new SaleBusinessException("编号为"+code+"的学生已经办理入住，不可进行删除");
+                }else{
+                    students.add(e);
+                }
+            });
             //批量删除用户表
-            studentDao.batchDeleteUser(list);
+            studentDao.batchDeleteUser(students);
             //批量删除学生表
-            return studentDao.batchDelete(list);
+            return studentDao.batchDelete(students);
         }
         //删除用户表
         String userName = studentDao.getDataById(studentInfo.getId());

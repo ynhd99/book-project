@@ -82,6 +82,7 @@
                 and r.remark = #{remark}
             </if>
         </where>
+        order by r.repair_date desc ,rm.room_code asc
     </select>
     <!--新增维修情况-->
     <insert id="batchAddRepair" parameterType="com.example.room.entity.RepairInfo">

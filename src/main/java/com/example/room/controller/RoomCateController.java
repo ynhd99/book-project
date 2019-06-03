@@ -71,4 +71,17 @@ public class RoomCateController {
         }
         return MessageBody.getMessageBody(true, "修改成功");
     }
+    /**
+     * 删除宿舍分类信息
+     *
+     * @param roomCategory
+     * @return
+     */
+    @PostMapping("deleteRoomCate")
+    public MessageBody deleteRoomCate(@RequestBody RoomCategory roomCategory) {
+        if (roomCateService.deleteRoomCate(roomCategory) < 0) {
+            throw new SaleBusinessException("删除失败");
+        }
+        return MessageBody.getMessageBody(true, "删除成功");
+    }
 }

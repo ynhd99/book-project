@@ -36,4 +36,11 @@ public interface RoomCateService {
      * @return
      */
     public int updateRoomCate(RoomCategory roomCategory);
+
+    /**
+     * 删除宿舍类别
+     * @param roomCategory
+     * @return
+     */
+    public int deleteRoomCate(RoomCategory roomCategory);
 }

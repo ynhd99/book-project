@@ -2,6 +2,7 @@ package com.example.room.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.dao.RoomCateDao;
+import com.example.room.dao.RoomDao;
 import com.example.room.entity.RoomCategory;
 import com.example.room.service.RoomCateService;
 import com.example.room.utils.UUIDUtils;
@@ -23,6 +24,8 @@ import java.util.regex.Pattern;
 public class RoomCateServiceImpl implements RoomCateService {
     @Autowired
     private RoomCateDao roomCateDao;
+    @Autowired
+    private RoomDao roomDao;
     private static Logger log = LoggerFactory.getLogger(RoomCateServiceImpl.class);
     private static final Pattern PATTERN = Pattern.compile("[\\u4e00-\\u9fa5]+|[a-zA-Z]+|\\d+");
     private static final String PARENTID = "-1";
@@ -93,15 +96,31 @@ public class RoomCateServiceImpl implements RoomCateService {
     }
 
     /**
-     * 修改图书分类信息
+     * 修改宿舍分类信息
      * @param roomCategory
      * @return
      */
     @Override
     public int updateRoomCate(RoomCategory roomCategory) {
+        if(roomDao.findRoomByCate(roomCategory.getId())>0 && roomCategory.getStatus() == 1){
+            throw new SaleBusinessException("该分类已经被引用，无法进行停用");
+        }
         return roomCateDao.updateRoomCate(roomCategory);
     }
-
+    /**
+     * 删除宿舍分类
+     * @param roomCategory
+     * @return
+     */
+    @Override
+    public int deleteRoomCate(RoomCategory roomCategory){
+        if(roomCategory.getParentId().equals("-1")){
+           if(roomCateDao.findRoomByParent(roomCategory.getId())>0){
+               throw new SaleBusinessException("该分类下的子类有启用状态的，不可删除");
+           }
+        }
+        return roomCateDao.deleteRoomCate(roomCategory.getId());
+    }
     /**
      * 获取下一个编码
      *

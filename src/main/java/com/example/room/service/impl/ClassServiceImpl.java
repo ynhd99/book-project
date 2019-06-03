@@ -2,6 +2,7 @@ package com.example.room.service.impl;
 
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
+import com.example.room.dao.StudentDao;
 import com.example.room.entity.ClassInfo;
 import com.example.room.entity.CollegeInfo;
 import com.example.room.service.ClassService;
@@ -40,6 +41,8 @@ public class ClassServiceImpl implements ClassService {
     private ClassDao classDao;
     @Autowired
     private UserController userController;
+    @Autowired
+    private StudentDao studentDao;
 
     /**
      * 根据条件查询班级管理数据（不分页）
@@ -119,6 +122,9 @@ public class ClassServiceImpl implements ClassService {
         //封装参数
         classInfo.setUpdateTime(new Date());
         classInfo.setUpdateUser(userController.getUser());
+        if(studentDao.findStudentByClass(classInfo.getId())>0 && classInfo.getStatus() == 1){
+            throw new SaleBusinessException("班级下已经存在学生，不能进行停用");
+        }
         logger.info("编辑班级管理数据，请求参数为：{}", JSONObject.toJSONString(classInfo));
         if (classDao.updateClass(classInfo) <= 0) {
             logger.error("编辑班级管理数据失败，请求参数为：{}", JSONObject.toJSONString(classInfo));

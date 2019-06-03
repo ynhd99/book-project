@@ -124,13 +124,16 @@ public class RoomServiceImpl implements RoomService {
         roomEntity.setUpdateTime(new Date());
         roomEntity.setCreateUser(userController.getUser());
         if (AirUtils.hv(roomEntity.getStatus()) && roomEntity.getStatus() == 1) {
-            List<RoomDetailInfo> roomDetailInfos = roomDetailDao.getDetailById(roomEntity.getId());
-            List<String> detailList = roomDetailInfos.stream().map(e -> e.getId()).collect(Collectors.toList());
-            List<String> studentList = roomDetailInfos.stream().map(e -> e.getStudentId()).collect(Collectors.toList());
-            if (AirUtils.hv(detailList) && AirUtils.hv(studentList)) {
-                studentDao.deleteSettleFlags(studentList);
-                roomDetailDao.deleteRoomDetails(detailList,new Date());
+            if(roomDetailDao.findDetailByRoom(roomEntity.getId())>0){
+                throw new SaleBusinessException("该宿舍已经分配学生入住，不可停用");
             }
+//            List<RoomDetailInfo> roomDetailInfos = roomDetailDao.getDetailById(roomEntity.getId());
+//            List<String> detailList = roomDetailInfos.stream().map(e -> e.getId()).collect(Collectors.toList());
+//            List<String> studentList = roomDetailInfos.stream().map(e -> e.getStudentId()).collect(Collectors.toList());
+//            if (AirUtils.hv(detailList) && AirUtils.hv(studentList)) {
+//                studentDao.deleteSettleFlags(studentList);
+//                roomDetailDao.deleteRoomDetails(detailList,new Date());
+//            }
         }
         return roomDao.updateRoom(roomEntity);
     }

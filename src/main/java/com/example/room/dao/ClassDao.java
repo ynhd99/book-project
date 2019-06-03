@@ -83,4 +83,11 @@ public interface ClassDao {
 	 * @return
 	 */
 	int batchAddClass(List<ClassInfo> classInfos);
+
+	/**
+	 * 根据学院id查询班级数量
+	 * @param id
+	 * @return
+	 */
+	int findClassByCollege(String id);
 }

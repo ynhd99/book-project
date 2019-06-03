@@ -18,6 +18,7 @@
                 and status = #{status}
             </if>
         </where>
+        order by status asc ,building_code asc
     </select>
     <!--编辑楼号信息-->
     <update id="updateBuilding" parameterType="com.example.room.entity.BuildingInfo">
@@ -127,4 +128,10 @@
             #{item}
         </foreach>
     </select>
+    <!--根据宿管员获取宿舍楼信息-->
+    <select resultType="int" id="findBuildingByStaff">
+        select count(*)
+        from building
+        where delete_flag = 0 and staff_id = #{id}
+        </select>
 </mapper>

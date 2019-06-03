@@ -118,4 +118,11 @@ public interface StudentDao {
      * @return
      */
     int batchAddStudent(List<StudentInfo> studentInfos);
+
+    /**
+     * 根据id获取到学生数量
+     * @param id
+     * @return
+     */
+    int findStudentByClass(String id);
 }

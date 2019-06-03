@@ -37,7 +37,7 @@
                 and college_code like concat('%',#{queryString},'%') or college_name like concat('%',#{queryString},'%')
             </if>
         </where>
-        order by status asc,college_code desc
+        order by status asc ,college_code asc
     </select>
     <!--根据编码获取学院信息-->
     <select id="getDataByCode" parameterType="string" resultType="com.example.room.entity.CollegeInfo">

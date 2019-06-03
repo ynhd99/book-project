@@ -47,7 +47,33 @@ public interface RoomDetailDao {
      * @return
      */
     int deleteRoomDetails(@Param("list") List<String> ids, @Param("date")Date date);
+
+    /**
+     * 根据id获取详情
+     * @param id
+     * @return
+     */
     List<RoomDetailInfo> getDetailById(String id);
+
+    /**
+     * 分页查询分配信息
+     * @param roomDetailInfo
+     * @return
+     */
     List<RoomDetailInfo> getRoomDetailForPage(RoomDetailInfo roomDetailInfo);
+
+    /**
+     * 根据学生id获取入住详情
+     * @param id
+     * @return
+     */
+    int findDetailByStudent(String id);
+
+    /**
+     * 根据宿舍获取详情数量
+     * @param id
+     * @return
+     */
+    int findDetailByRoom(String id);
 }
 

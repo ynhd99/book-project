@@ -78,6 +78,7 @@
                 and start_time &gt;= #{startTime} and start_time &lt;= #{endTime}
             </if>
         </where>
+        order by start_time desc
     </select>
     <!--批量新增访问者信息-->
     <insert id="batchAddVisitor" parameterType="com.example.room.entity.VisitorInfo">

@@ -3,6 +3,7 @@ package com.example.room.service.impl;
 import com.example.room.common.exception.SaleBusinessException;
 import com.example.room.controller.UserController;
 import com.example.room.dao.BuildingDao;
+import com.example.room.dao.RoomDao;
 import com.example.room.entity.BuildingInfo;
 import com.example.room.entity.ClassInfo;
 import com.example.room.service.BuildingService;
@@ -31,6 +32,8 @@ public class BuildingServiceImpl implements BuildingService {
     private BuildingDao buildingDao;
     @Autowired
     private UserController userController;
+    @Autowired
+    private RoomDao roomDao;
 
     /**
      * 新增宿舍楼信息
@@ -78,6 +81,9 @@ public class BuildingServiceImpl implements BuildingService {
         //封装参数
         buildingInfo.setUpdateTime(new Date());
         buildingInfo.setUpdateUser(userController.getUser());
+        if(roomDao.findRoomByBuilding(buildingInfo.getId())>0 && buildingInfo.getStatus() == 1){
+            throw new SaleBusinessException("该宿舍楼下已经存在宿舍，不能进行停用");
+        }
         return buildingDao.updateBuilding(buildingInfo);
     }
 
