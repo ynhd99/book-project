@@ -1,6 +1,7 @@
 package com.example.room.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.example.room.common.exception.SaleBusinessException;
+import com.example.room.controller.UserController;
 import com.example.room.dao.RoomCateDao;
 import com.example.room.dao.RoomDao;
 import com.example.room.entity.RoomCategory;
@@ -25,6 +26,8 @@ public class RoomCateServiceImpl implements RoomCateService {
     @Autowired
     private RoomCateDao roomCateDao;
     @Autowired
+    private UserController userController;
+    @Autowired
     private RoomDao roomDao;
     private static Logger log = LoggerFactory.getLogger(RoomCateServiceImpl.class);
     private static final Pattern PATTERN = Pattern.compile("[\\u4e00-\\u9fa5]+|[a-zA-Z]+|\\d+");
@@ -48,6 +51,8 @@ public class RoomCateServiceImpl implements RoomCateService {
         }
         roomCategory.setUpdateTime(new Date());
         roomCategory.setCreateTime(new Date());
+        roomCategory.setCreateUser(userController.getUser());
+        roomCategory.setUpdateUser(userController.getUser());
         roomCategory.setId(UUIDUtils.getUUID());
         log.info("新增分类信息，请求参数为:{}", JSONObject.toJSONString(roomCategory));
         return roomCateDao.addRoomCate(roomCategory);
@@ -105,6 +110,10 @@ public class RoomCateServiceImpl implements RoomCateService {
         if(roomDao.findRoomByCate(roomCategory.getId())>0 && roomCategory.getStatus() == 1){
             throw new SaleBusinessException("该分类已经被引用，无法进行停用");
         }
+        roomCategory.setUpdateTime(new Date());
+        roomCategory.setCreateTime(new Date());
+        roomCategory.setCreateUser(userController.getUser());
+        roomCategory.setUpdateUser(userController.getUser());
         return roomCateDao.updateRoomCate(roomCategory);
     }
     /**
