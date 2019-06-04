@@ -111,8 +111,6 @@ public class RoomCateServiceImpl implements RoomCateService {
             throw new SaleBusinessException("该分类已经被引用，无法进行停用");
         }
         roomCategory.setUpdateTime(new Date());
-        roomCategory.setCreateTime(new Date());
-        roomCategory.setCreateUser(userController.getUser());
         roomCategory.setUpdateUser(userController.getUser());
         return roomCateDao.updateRoomCate(roomCategory);
     }

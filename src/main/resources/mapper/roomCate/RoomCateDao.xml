@@ -70,57 +70,63 @@
     </select>
     <!--根据不同级别过去分类-->
     <select id="getCategoryByQuery" resultType="com.example.room.entity.RoomCategory">
-        select distinct r.id,r.cate_code cateCode,r.cate_name catename,r.cate_desc cateDesc,r.status,r.parent_id parentId
+        select distinct r.id,r.cate_code cateCode,r.cate_name catename,r.cate_desc cateDesc,r.status,r.parent_id
+        parentId
         from (
-          select *
-          from room_category bc
-          where bc.parent_id in (
-              select bc1.id
-              from room_category bc1
-              <where>
-                  bc1.parent_id = -1
-                  <if test="null != queryString and '' != queryString">
-                  and bc1.cate_code like concat('%',#{queryString},'%') or bc1.cate_name like concat('%',#{queryString},'%')
-                  </if>
-              </where>
-            )
-          or ((bc.cate_name like concat('%',#{queryString},'%') or bc.cate_code like concat('%',#{queryString},'%'))
-          and bc.parent_id = -1)
+        select *
+        from room_category bc
+        where bc.parent_id in (
+        select bc1.id
+        from room_category bc1
+        <where>
+            bc1.parent_id = -1
+            <if test="null != queryString and '' != queryString">
+                and bc1.cate_code like concat('%',#{queryString},'%') or bc1.cate_name like
+                concat('%',#{queryString},'%')
+            </if>
+        </where>
+        )
+        or ((bc.cate_name like concat('%',#{queryString},'%') or bc.cate_code like concat('%',#{queryString},'%'))
+        and bc.parent_id = -1)
         union all
-          select *
-          from room_category bc2
-          where bc2.id in (
-              select bc3.parent_id
-              from room_category bc3
+        select *
+        from room_category bc2
+        where bc2.id in (
+        select bc3.parent_id
+        from room_category bc3
         <where>
             bc3.parent_id != -1
             <if test="null != queryString and '' != queryString">
-            and bc3.cate_code like concat('%',#{queryString},'%') or bc3.cate_name like concat('%',#{queryString},'%')
+                and bc3.cate_code like concat('%',#{queryString},'%') or bc3.cate_name like
+                concat('%',#{queryString},'%')
             </if>
         </where>
-            )
-          or ((bc2.cate_name like concat('%',#{queryString},'%') or bc2.cate_code like concat('%',#{queryString},'%'))
-          and bc2.parent_id != -1)
+        )
+        or ((bc2.cate_name like concat('%',#{queryString},'%') or bc2.cate_code like concat('%',#{queryString},'%'))
+        and bc2.parent_id != -1)
         ) r
-          where
-          r.delete_flag = 0
-          order by r.status asc,r.cate_code asc
+        where
+        r.delete_flag = 0
+        order by r.status asc,r.cate_code asc
     </select>
     <!--修改宿舍分类-->
     <update id="updateRoomCate" parameterType="com.example.room.entity.RoomCategory">
         update room_category
         <set>
             <if test="null != cateCode and '' != cateCode">
-            cate_code = #{cateCode},
+                cate_code = #{cateCode},
             </if>
             <if test="null != cateName and '' != cateName">
-            cate_name = #{cateName},
+                cate_name = #{cateName},
             </if>
             <if test="null != cateDesc and '' != cateDesc">
                 cate_desc = #{cateDesc},
             </if>
             <if test="null != updateTime">
-            update_time = #{updateTime},
+                update_time = #{updateTime},
+            </if>
+            <if test="null != updateUser and '' != updateUser">
+                update_user = #{updateUser},
             </if>
             <if test="null != status">
                 status = #{status}
